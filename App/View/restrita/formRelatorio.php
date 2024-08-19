@@ -22,7 +22,7 @@
         <div class="card-body">
 
             <?php if ($page == 'relatorioItensPorFornecedor') : ?>
-                <div class="col-12 mt-3">
+                <div class="mt-3">
                 <label for="fornecedor_id" class="form-label">Fornecedor</label>
                 <select name="fornecedor_id" id="fornecedor_id" class="form-control" required <?= $this->getAcao() == 'view' || $this->getAcao() == 'delete' ? 'disabled' : '' ?>>
                     <option value="">...</option>

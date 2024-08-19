@@ -32,16 +32,14 @@ class FaleConosco extends ControllerMain
 
         foreach ($dados['aProduto'] as $produto) {
             if ($produto['quantidade'] < 3) {
-                $message .= "Nome: " . $produto['nome'] . "<br>";
+                $message .= "Nome: " . $produto['descricao'] . "<br>";
                 $message .= "Quantidade: " . $produto['quantidade'] . "<br>";
 
                 foreach ($dados['aFornecedor'] as $fornecedor) {
-                    if ($fornecedor['id'] == $produto['fornecedor']) {
-                        $fornecedorNome = $fornecedor['nome'];
-                        break;
-                    }
-                }
-
+                    $fornecedorNome = $fornecedor['nome'];
+                    break;
+                }  
+                
                 $message .= "Fornecedor: " . $fornecedorNome . "<br><br>";
                 $temProdutoAbaixoDoLimite = true;
             }
@@ -74,7 +72,7 @@ class FaleConosco extends ControllerMain
             $corpoEmail, // Corpo do E-mail
             $usuarioAdministradorEmail['email'] // Destinatário do E-mail
         );
-    
+
         if ($lRetMail) {
             Session::set("exibirModalEstoque", true);
         } else {

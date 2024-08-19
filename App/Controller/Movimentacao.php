@@ -81,6 +81,7 @@ class Movimentacao extends ControllerMain
             $quantidade = isset($post['quantidade']) ? (int)$post['quantidade'] : '';
             $id_produto = isset($post['id_produto']) ? (int)$post['id_produto'] : '';
             $valor_produto = isset($post['valor']) ? (float)$post['valor'] : '';
+            $valor_venda = isset($post['valor_venda']) ? (float)$post['valor_venda'] : '';
 
             $ProdutoModel = $this->loadModel("Produto");
             $dadosProduto = $ProdutoModel->recuperaProduto($id_produto);
@@ -139,7 +140,8 @@ class Movimentacao extends ControllerMain
                         // "id_movimentacoes"  => '',
                         "id_produtos"       => $id_produto,
                         "quantidade"        => $quantidade,
-                        "valor"             => $valor_produto
+                        "valor"             => $valor_produto,
+                        "valor_vemda"       => $valor_venda
                     ]
                 ]
                 );
@@ -176,6 +178,7 @@ class Movimentacao extends ControllerMain
         $quantidade = (int)$post['quantidade'];
         $id_produto = (int)$post['id_produto'];
         $valor_produto = (float)$post['valor'];
+        $valor_venda = (float)$post['valor_venda'];
 
         $ProdutoModel = $this->loadModel("Produto");
         $dadosProduto['aProduto'] = $ProdutoModel->recuperaProduto($id_produto);
@@ -207,7 +210,9 @@ class Movimentacao extends ControllerMain
                 'nome_produto' => $dadosProduto['aProduto'][0]['nome'],
                 'id_produto' => $id_produto,
                 'quantidade' => $quantidade,
-                'valor' => $valor_produto
+                'valor' => $valor_produto,
+                "valor_vemda"       => $valor_venda
+
             );
         }
 
@@ -298,6 +303,7 @@ class Movimentacao extends ControllerMain
             $id_produto = isset($post['id_produto']) ? $post['id_produto'] : '';
             (int)$quantidades = isset($post['quantidade']) ? $post['quantidade'] : '';
             $valores_produtos = isset($post['valor']) ? $post['valor'] : "";
+            $valor_venda = isset($post['valor_venda']) ? $post['valor_venda'] : "";
 
             $produtoMovAtualizado = isset($_SESSION['produto_mov_atualizado']) ? $_SESSION['produto_mov_atualizado'] : [];
 
@@ -377,7 +383,8 @@ class Movimentacao extends ControllerMain
                         [
                             "id_produtos"           => $id_produto,
                             "quantidade"            => $quantidade_produto, 
-                            "valor"                 => $valores_produtos
+                            "valor"                 => $valores_produtos,
+                            "valor_venda"           => $valor_venda
                         ]
                     ],
                     [
@@ -406,7 +413,9 @@ class Movimentacao extends ControllerMain
                             [
                                 "id_produtos"           => $id_produto,
                                 // "quantidade"            => $quantidades,
-                                "valor"                 => $valores_produtos
+                                "valor"                 => $valores_produtos,
+                                "valor_venda"           => $valor_venda
+
                             ]
                         ],
                         [
@@ -454,6 +463,7 @@ class Movimentacao extends ControllerMain
         $id_produto = isset($post['id_produto']) ? $post['id_produto'] : '';
         $quantidades = isset($post['quantidade']) ? $post['quantidade'] : '';
         $valor_produto = isset($post['valor']) ? $post['valor'] : "";
+        $valor_venda = isset($post['valor_venda']) ? $post['valor_venda'] : "";
 
         $dadosMovimentacao = $this->model->lista('id');
 
@@ -485,7 +495,9 @@ class Movimentacao extends ControllerMain
                     [
                         [
                             "id_produtos"           => $id_produto,
-                            "valor"                 => $valor_produto
+                            "valor"                 => $valor_produto,
+                            "valor_venda"           => $valor_venda
+
                         ]
                     ],
                     [
@@ -510,9 +522,6 @@ class Movimentacao extends ControllerMain
 
         $dados = $this->model->getProdutoCombobox($this->getOutrosParametros(2), $this->getOutrosParametros(3)); 
     
-        // var_dump($this->getOutrosParametros(3));
-        // var_dump($dados);
-        // exit;
 
         echo json_encode($dados);
 

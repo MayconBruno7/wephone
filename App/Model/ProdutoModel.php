@@ -123,7 +123,9 @@ Class ProdutoModel extends ModelMain
     public function recuperaPeca($idPeca)
     {
 
-        $rsc = $this->db->dbSelect("SELECT * FROM {$this->table} WHERE id = ? AND tipo_produto = 2", [$idPeca]);
+        $rsc = $this->db->dbSelect("SELECT p.*,  mi.valor_venda FROM {$this->table} AS p
+                                    INNER JOIN movimentacao_item AS mi ON p.id = mi.id_produtos
+                                    WHERE p.id = ? AND tipo_produto = 2", [$idPeca]);
             
         if ($this->db->dbNumeroLinhas($rsc) > 0) {
             return $this->db->dbBuscaArrayAll($rsc);
@@ -185,16 +187,15 @@ Class ProdutoModel extends ModelMain
                 osp.id_peca,
                 osp.quantidade AS quantidade_peca_ordem,
                 p.*,
-                mi.valor AS valor_peca -- Inclui o valor do produto da tabela movimentacao_item
+                mi.valor_venda AS valor_peca 
             FROM 
                 {$this->table} p
             INNER JOIN 
                 ordens_servico_pecas osp ON p.id = osp.id_peca
-            INNER JOIN 
+            LEFT JOIN 
                 movimentacao_item mi ON osp.id_peca = mi.id_produtos
             WHERE 
                 osp.id_ordem_servico = ?
-                OR osp.id_ordem_servico IS NULL
             ORDER BY 
                 p.id;
             ",

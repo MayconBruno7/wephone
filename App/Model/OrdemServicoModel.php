@@ -9,16 +9,17 @@ Class OrdemServicoModel extends ModelMain
 {
     public $table = "ordens_servico";
 
-    // public $validationRules = [
-    //     'nome' => [
-    //         'label' => 'nome',
-    //         'rules' => 'required|min:3|max:50'
-    //     ],
-    //     'statusRegistro' => [
-    //         'label' => 'Status',
-    //         'rules' => 'required|int'
-    //     ]
-    // ];
+    public $validationRules = [
+        'cliente_nome' => [
+            'label' => 'cliente_nome',
+            'rules' => 'required|min:3|max:255'
+        ],
+
+        'statusRegistro' => [
+            'label' => 'Status',
+            'rules' => 'required|int'
+        ]
+    ];
 
     /**
      * lista
@@ -46,7 +47,7 @@ Class OrdemServicoModel extends ModelMain
                 p.id AS peca_id,
                 p.nome AS nome_peca,
                 p.descricao,
-                mi.valor AS valor_peca -- Coluna de valor da tabela movimentacao_item
+                mi.valor_venda AS valor_peca -- Coluna de valor da tabela movimentacao_item
             FROM
                 ordens_servico os
             LEFT JOIN
@@ -290,7 +291,7 @@ Class OrdemServicoModel extends ModelMain
         $pdf->SetFont('Arial', 'B', 16);
 
         // Adicionar a imagem
-        $pdf->Image(baseUrl() . 'assets/img/brasao-pmrl.png', 98, 10, 15);
+        $pdf->Image(baseUrl() . 'assets/img/wephonelogo.jpg', 98, 10, 15);
 
         // Adicionar espaço abaixo da imagem
         $pdf->Ln(20);
@@ -361,7 +362,7 @@ Class OrdemServicoModel extends ModelMain
             if(!empty($id_peca)) {
                 $result_pecas = $this->db->dbSelect("SELECT 
                     p.*,
-                    mi.valor
+                    mi.valor_venda
                 FROM 
                     produto p
                 INNER JOIN 
@@ -377,7 +378,7 @@ Class OrdemServicoModel extends ModelMain
                 foreach ($result_pecas as $peca) {
 
                     $peca_nome = isset($peca['nome']) ? trim($peca['nome']) : 'N/A';
-                    $valor = isset($peca['valor']) ? (float)$peca['valor'] : 0.0;
+                    $valor = isset($peca['valor_venda']) ? (float)$peca['valor_venda'] : 0.0;
 
                     $pdf->Cell(60, 10, iconv('UTF-8', 'ISO-8859-1', $peca_nome), 1, 0, 'L');
                     $pdf->Cell(0, 10,'R$ ' . number_format($valor, 2, ',', '.'), 1, 1, 'R');

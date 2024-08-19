@@ -90,35 +90,43 @@ class OrdemServico extends ControllerMain
             // Dados da peça
             $quantidade = isset($post['quantidade']) ? (int)$post['quantidade'] : '';
             $id_peca = isset($post['id_peca']) ? (int)$post['id_peca'] : '';
-            $valor_peca = isset($post['valor']) ? (float)$post['valor'] : '';
 
             $PecaModel = $this->loadModel("Produto");
             $dadosPeca = $PecaModel->recuperaPeca($id_peca);
-          
-            if ($this->getAcao() == 'update') {
+
+            $verificaQuantidadeEstoqueNegativa = false;
+    
+            if ($dadosPeca[0]['quantidade'] < $quantidade) {
+                $verificaQuantidadeEstoqueNegativa = true;
+
+                Session::set("msgError", "Quantidade do produto não disponivel em estoque!");
+                Redirect::page("OrdemServico/form/insert/0");
+
+            } else {
+                if ($this->getAcao() == 'update') {
                 
-                // Verificar se há uma sessão de ordem de serviço
-                if (!isset($_SESSION['ordem_servico'])) {
-                    $_SESSION['ordem_servico'] = array();
-                }
-            
-                // Verificar se há produtos na sessão de ordem de serviço
-                if (!isset($_SESSION['ordem_servico'][0]['produtos'])) {
-                    $_SESSION['ordem_servico'][0]['produtos'] = array();
-                }
-            
-                // Verificar se o produto já está na sessão de ordem de serviço
-                $produtoEncontrado = false;
-                foreach ($_SESSION['ordem_servico'][0]['produtos'] as &$produto_sessao) {
-                    if ($produto_sessao['id_peca'] == $id_peca) {
-                        // Atualizar a quantidade do produto na sessão
-                        $produto_sessao['quantidade'] += $quantidade;
-                        $produtoEncontrado = true;
-                        break;
+                    // Verificar se há uma sessão de ordem de serviço
+                    if (!isset($_SESSION['ordem_servico'])) {
+                        $_SESSION['ordem_servico'] = array();
                     }
-                }
-            } 
-            
+
+                    // Verificar se há produtos na sessão de ordem de serviço
+                    if (!isset($_SESSION['ordem_servico'][0]['produtos'])) {
+                        $_SESSION['ordem_servico'][0]['produtos'] = array();
+                    }
+                
+                    // Verificar se o produto já está na sessão de ordem de serviço
+                    $produtoEncontrado = false;
+                    foreach ($_SESSION['ordem_servico'][0]['produtos'] as &$produto_sessao) {
+                        if ($produto_sessao['id_peca'] == $id_peca) {
+                            // Atualizar a quantidade do produto na sessão
+                            $produto_sessao['quantidade'] += $quantidade;
+                            $produtoEncontrado = true;
+                            break;
+                        }
+                    }
+                } 
+                
                 // parte da inserção de ordem de serviço e produtos
                 $inserindoOrdemServicoEProdutos = $this->model->insertOrdemServico([
                     "cliente_nome"              => $cliente_nome,
@@ -135,7 +143,6 @@ class OrdemServico extends ControllerMain
                 ],
                 [
                     [
-                        // "d_ordem_servico"  => '',
                         "id_peca"           => $id_peca,
                         "quantidade"        => $quantidade,
                     ]
@@ -148,6 +155,9 @@ class OrdemServico extends ControllerMain
                     Session::set("msgSuccess", "Ordem de serviço adicionada com sucesso.");
                     Redirect::page("OrdemServico");
                 }
+            }
+             exit;          
+
         } else {
             Session::set("msgError", "Dados do formulário insuficientes.");
             Redirect::page("OrdemServico/form/insert/0");
@@ -166,44 +176,56 @@ class OrdemServico extends ControllerMain
         $id_ordem_servico = isset($post['id_ordem_servico']) ? $post['id_ordem_servico'] : ""; 
         $quantidade = $post['quantidade'];
         $id_peca = $post['id_peca'];
-        $valor_produto = (float)$post['valor'];
 
         $PecaModel = $this->loadModel("Produto");
         $dadosPeca['aPeca'] = $PecaModel->recuperaPeca($id_peca);
 
-        // Verificar se há uma sessão de ordem de serviço
-        if (!isset($_SESSION['ordem_servico'])) {
-            $_SESSION['ordem_servico'] = array();
-        }
+        $valor_produto = $dadosPeca['aPeca'][0]['valor_venda'];
 
-        // Verificar se há produtos na sessão de ordem de serviço
-        if (!isset($_SESSION['ordem_servico'][0]['produtos'])) {
-            $_SESSION['ordem_servico'][0]['produtos'] = array();
-        }
+        $verificaQuantidadeEstoqueNegativa = false;
     
-        // Verificar se o produto já está na sessão de ordem de serviço
-        $produtoEncontrado = false;
-        foreach ($_SESSION['ordem_servico'][0]['produtos'] as &$produto_sessao) {
-            if ($produto_sessao['id_peca'] == $id_peca) {
-                // Atualizar a quantidade do produto na sessão
-                $produto_sessao['quantidade'] += $quantidade;
-                $produtoEncontrado = true;
-                break;
-            }
-        }
-   
-        // Se o produto não estiver na sessão de ordem de serviço, adicioná-lo
-        if (!$produtoEncontrado) {
-            $_SESSION['ordem_servico'][0]['produtos'][] = array(
-                'nome_peca' => $dadosPeca['aPeca'][0]['nome'],
-                'id_peca' => $id_peca,
-                'quantidade' => $quantidade,
-                'valor' => $valor_produto
-            );
-        }
+        if ($dadosPeca['aPeca'][0]['quantidade'] < $quantidade) {
+            $verificaQuantidadeEstoqueNegativa = true;
 
-        Session::set("msgSuccess", "Peça adicionada a ordem de serviço.");
-        Redirect::page("OrdemServico/form/insert/0");
+            Session::set("msgError", "Quantidade do produto não disponivel em estoque!");
+            Redirect::page("OrdemServico/form/insert/0");
+
+        } else {
+                
+            // Verificar se há uma sessão de ordem de serviço
+            if (!isset($_SESSION['ordem_servico'])) {
+                $_SESSION['ordem_servico'] = array();
+            }
+
+            // Verificar se há produtos na sessão de ordem de serviço
+            if (!isset($_SESSION['ordem_servico'][0]['produtos'])) {
+                $_SESSION['ordem_servico'][0]['produtos'] = array();
+            }
+        
+            // Verificar se o produto já está na sessão de ordem de serviço
+            $produtoEncontrado = false;
+            foreach ($_SESSION['ordem_servico'][0]['produtos'] as &$produto_sessao) {
+                if ($produto_sessao['id_peca'] == $id_peca) {
+                    // Atualizar a quantidade do produto na sessão
+                    $produto_sessao['quantidade'] += $quantidade;
+                    $produtoEncontrado = true;
+                    break;
+                }
+            }
+    
+            // Se o produto não estiver na sessão de ordem de serviço, adicioná-lo
+            if (!$produtoEncontrado) {
+                $_SESSION['ordem_servico'][0]['produtos'][] = array(
+                    'nome_peca' => $dadosPeca['aPeca'][0]['nome'],
+                    'id_peca' => $id_peca,
+                    'quantidade' => $quantidade,
+                    'valor' => $valor_produto
+                );
+            }
+
+            Session::set("msgSuccess", "Peça adicionada a ordem de serviço.");
+            Redirect::page("OrdemServico/form/insert/0");
+        }
     }
 
     /**
@@ -247,7 +269,7 @@ class OrdemServico extends ControllerMain
             $OrdemServicoItemModel = $this->loadModel("OrdemServicoPeca");
             $dadosItensOrdemServico = $OrdemServicoItemModel->recuperaPecaOS($id_peca, $id_ordem_servico);
 
-            $quantidade_ordem_servico = $dadosItensOrdemServico[0]['quantidade'];
+            $quantidade_ordem_servico = isset($dadosItensOrdemServico[0]['quantidade']) ? $dadosItensOrdemServico[0]['quantidade'] : "" ;
             
             if (!empty($dadosItensOrdemServico)) {
              
@@ -275,59 +297,64 @@ class OrdemServico extends ControllerMain
                 }   
             }
 
-            // var_dump($dadosPeca);
-            // exit;
-            // if (!empty($dadosPeca)) {
-            //     if ($dadosPeca[0]['quantidade'] >= $quantidade) {
-            //         $verificaQuantidadeEstoqueNegativa = true;
-            //     } else if ($dadosPeca[0]['quantidade'] < $quantidade) {
-                    $verificaQuantidadeEstoqueNegativa = true;
-            //     } 
-            // }
-      
+            $PecaModel = $this->loadModel("Produto");
+            $dadosPeca['aPeca'] = $PecaModel->recuperaPeca($id_peca);
+            
+            if ($dadosPeca['aPeca'][0]['quantidade'] < $quantidade) {
+                $verificaQuantidadeEstoqueNegativa = true;
+
+            } else {
+                $verificaQuantidadeEstoqueNegativa = false;
+            }
+        
             if ($this->getAcao() != 'updateProdutoOrdemServico') {
-
-                $AtualizandoOrdemServicoEProdutos = $this->model->updateOrdemServico(
-                    [
-                        "id"   => $id_ordem_servico
-                    ],
-                    [
-                        "cliente_nome"      => $cliente_nome,
-                        "telefone_cliente"  => $telefone_cliente,
-                        "modelo_dispositivo"=> $modelo_dispositivo,
-                        "imei_dispositivo"  => $imei_dispositivo,
-                        "tipo_servico"      => $tipo_servico,
-                        "descricao_servico" => $descricao_servico,
-                        "problema_reportado"=> $problema_reportado,
-                        "status"            => $status,
-                        "data_abertura"     => $data_abertura,
-                        "observacoes"       => $observacoes,
-                    ],
-                    [
+              
+                if (!$verificaQuantidadeEstoqueNegativa) {
+                    $AtualizandoOrdemServicoEProdutos = $this->model->updateOrdemServico(
                         [
-                            "id_peca"       => $id_peca,
-                            "quantidade"    => $quantidade,
-                            "valor"         => $valor_peca
-                        ]
-                    ],
+                            "id"   => $id_ordem_servico
+                        ],
+                        [
+                            "cliente_nome"      => $cliente_nome,
+                            "telefone_cliente"  => $telefone_cliente,
+                            "modelo_dispositivo"=> $modelo_dispositivo,
+                            "imei_dispositivo"  => $imei_dispositivo,
+                            "tipo_servico"      => $tipo_servico,
+                            "descricao_servico" => $descricao_servico,
+                            "problema_reportado"=> $problema_reportado,
+                            "status"            => $status,
+                            "data_abertura"     => $data_abertura,
+                            "observacoes"       => $observacoes,
+                        ],
+                        [
+                            [
+                                "id_peca"       => $id_peca,
+                                "quantidade"    => $quantidade,
+                                "valor"         => $valor_peca
+                            ]
+                        ],
 
-                );
+                    );
 
-                if ($AtualizandoOrdemServicoEProdutos || isset($_SESSION['produto_mov_atualizado']) && $_SESSION['produto_mov_atualizado'] == true) {
-                    Session::destroy('OrdemServico');
-                    Session::destroy('produtos');
-                    Session::destroy('produto_mov_atualizado');
-                    Session::set("msgSuccess", "Ordem de servico alterada com sucesso.");
-                    return Redirect::page("OrdemServico");
+                    if ($AtualizandoOrdemServicoEProdutos || isset($_SESSION['produto_mov_atualizado']) && $_SESSION['produto_mov_atualizado'] == true) {
+                        Session::destroy('OrdemServico');
+                        Session::destroy('produtos');
+                        Session::destroy('produto_mov_atualizado');
+                        Session::set("msgSuccess", "Ordem de servico alterada com sucesso.");
+                        return Redirect::page("OrdemServico");
+                    } else {
+                        Session::set("msgError", "Falha tentar alterar a Ordem de serviço.");
+                        return Redirect::page("OrdemServico/form/update/" . $id_ordem_servico);
+
+                    }
                 } else {
-                    Session::set("msgError", "Falha tentar alterar a Ordem de serviço.");
+                    Session::set("msgError", "Sem produto em estoque.");
                     return Redirect::page("OrdemServico/form/update/" . $id_ordem_servico);
-
                 }
 
             } else if ($this->getAcao() == 'updateProdutoOrdemServico') {
-
-                if ($verificaQuantidadeEstoqueNegativa) {
+                
+                if (!$verificaQuantidadeEstoqueNegativa) {
                     $AtualizandoInfoProdutoOrdemServico = $this->model->updateInformacoesProdutoOrdemServico(
                         [
                             "id_ordem_servico" => $id_ordem_servico
@@ -336,7 +363,6 @@ class OrdemServico extends ControllerMain
                             [
                                 "id_peca"           => $id_peca,
                                 "quantidade"        => $quantidade,
-                                // "valor"                 => $valor_peca
                             ]
                         ],
                         [
@@ -346,6 +372,7 @@ class OrdemServico extends ControllerMain
                         
                     );
 
+                  
                     if ($AtualizandoInfoProdutoOrdemServico) {
                         if (!isset($_SESSION['produto_mov_atualizado'])) {
                             $_SESSION['produto_mov_atualizado'] = true;
@@ -411,8 +438,7 @@ class OrdemServico extends ControllerMain
             $dadosPeca = $ProdutoModel->recuperaPeca($id_produto);
 
             $deletaProduto =  $this->model->deleteInfoProdutoOrdemServico($id_ordem_servico, $dadosPeca, $tipo_movimentacao, $quantidadeRemover);
-            // var_dump($dadosPeca,$);
-            // exit("Opa");
+     
             if (!isset($_SESSION['produto_mov_atualizado']) && $deletaProduto) {
                 $_SESSION['produto_mov_atualizado'] = true;
             }

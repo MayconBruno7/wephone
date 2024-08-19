@@ -51,7 +51,7 @@
                 <div class="modal-body">
                     <form action="<?= ($this->getAcao() == 'update') ? baseUrl() . 'Movimentacao/update/updateProdutoMovimentacao/' . $this->getId() : baseUrl() . 'Movimentacao/insertProdutoMovimentacao/' . $this->getAcao() ?>" id="formAdicionarProduto" method="POST">
                         
-                        <div class="col-12 mb-3">
+                        <div class="mb-3 w-100" >
                             <label for="tipo_produto" class="form-label">Tipo de produto</label>
                             <select name="tipo_produto" id="tipo_produto" class="form-control" required <?=  $this->getAcao() != 'insert' &&  $this->getAcao() != 'update' ? 'disabled' : ''?>>
                                 <option value="">...</option>    
@@ -76,8 +76,13 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="valor" class="form-label">Valor Unitário</label>
+                            <label for="valor" class="form-label">Valor de compra</label>
                             <input type="number" step="0.01" class="form-control" id="valor" name="valor" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="valor_venda" class="form-label">Valor de venda</label>
+                            <input type="number" step="0.01" class="form-control" id="valor_venda" name="valor_venda" required>
                         </div>
 
                         <input type="hidden" name="id_movimentacao" value="<?= $this->getId() ?>">
@@ -142,25 +147,13 @@
                 </select>
             </div>
 
-            <div class="col-4 mt-3">
-                <label for="setor_id" class="form-label">Setor</label>
-                <select name="setor_id" id="setor_id" class="form-control" required <?=  $this->getAcao() != 'insert' &&  $this->getAcao() != 'update' ? 'disabled' : '' ?>>
-                    <option value="">...</option>
-                    <?php foreach ($dados['aSetorMovimentacao'] as $setor): ?>
-                        <option value="<?= $setor['id'] ?>" <?= (isset($dadosMovimentacao['setor_id']) && $dadosMovimentacao['setor_id'] == $setor['id']) ? 'selected' : '' ?>>
-                            <?= $setor['nome'] ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div class="col-4 mt-3">
+            <div class="col-6 mt-3">
                 <label for="data_pedido" class="form-label">Data do Pedido</label>
                 <!--  verifica se a nome está no banco de dados e retorna essa nome -->
                 <input type="date" class="form-control" name="data_pedido" id="data_pedido" placeholder="data_pedido do item" required autofocus value="<?= isset($dadosMovimentacao['data_pedido']) ? $dadosMovimentacao['data_pedido'] : "" ?>" max="<?= date('Y-m-d') ?>" <?=  $this->getAcao() && ( $this->getAcao() == 'delete' ||  $this->getAcao() == 'view') ? 'disabled' : '' ?>>
             </div>
 
-            <div class="col-4 mt-3">
+            <div class="col-6 mt-3">
                 <label for="data_chegada" class="form-label">Data de Chegada</label>
                 <!-- verifica se a data_chegada está no banco de dados e retorna essa data -->
                 <input type="date" class="form-control" name="data_chegada" id="data_chegada" placeholder="data_chegada do item" value="<?= isset($dadosMovimentacao['data_chegada']) ? $dadosMovimentacao['data_chegada'] : "" ?>" max="<?= date('Y-m-d') ?>" min="<?= setValor('data_pedido') ?>" <?= $this->getAcao() && ( $this->getAcao() == 'delete' ||  $this->getAcao() == 'view') ? 'disabled' : '' ?>>
@@ -202,18 +195,6 @@
                     <option value="">...</option>
                     <option value="1" <?= setValor('statusRegistro') == 1 ? 'selected' : '' ?>>Ativo</option>
                     <option value="2" <?= setValor('statusRegistro') == 2 ? 'selected' : '' ?>>Inativo</option>
-                </select>
-            </div>
-
-            <div class="col-8 mt-3">
-                <label for="setor_id" class="form-label">Setor</label>
-                <select name="setor_id" id="setor_id" class="form-control" required <?= $this->getAcao() == 'view' || $this->getAcao() == 'delete' ? 'disabled' : '' ?>>
-                    <option value="">...</option>
-                    <?php foreach ($dados['aSetorMovimentacao'] as $setor): ?>
-                        <option value="<?= $setor['id'] ?>" <?= setValor('id_setor') ? 'selected' : '' ?>>
-                            <?= $setor['nome'] ?>
-                        </option>
-                    <?php endforeach; ?>
                 </select>
             </div>
 
@@ -426,12 +407,14 @@
                 var id_produto = campo.querySelector('.id_produto').value;
                 var nome_produto = campo.querySelector('.nome_produto').value;
                 var valor = campo.querySelector('.valor').value;
+                var valor_venda = campo.querySelector('.valor_venda').value; 
                 var quantidade = campo.querySelector('.quantidade').value;
 
                 produtos.push({
                     'id_produto': id_produto,
                     'nome_produto': nome_produto,
                     'valor': valor,
+                    'valor_venda': valor_venda,
                     'quantidade': quantidade
                 });
             });

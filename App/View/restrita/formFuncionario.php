@@ -72,7 +72,7 @@
 
             <?php if (in_array($this->getAcao(), ['insert', 'update'])): ?>
 
-                <div class="col-12 mb-3">
+                <div class="mt-3 mb-3">
                     <label for="anexos" class="form-label">Imagem</label>
                     <input class="form-control" type="file" id="imagem" name="imagem">
                 </div>

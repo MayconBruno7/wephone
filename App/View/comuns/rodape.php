@@ -78,7 +78,7 @@
                 if (!ultimaVerificacao || (agora - ultimaVerificacao >= intervalo)) {
                     verificarEstoque();
                 } else {
-                    console.log("Ainda não passou 1 minuto desde a última verificação.");
+                    console.log("Ainda não passou 24 horas desde a última verificação.");
                     atualizarTempoParaProximaVerificacao();
                 }
             });
@@ -110,16 +110,6 @@
         </style>
         
         <footer class="main-footer mt-4">
-
-
-
-
-            <!-- <button onclick="verificarEstoque()">Abrir  modla</button> -->
-            <!-- <a href="<?= baseUrl() ?>HistoricoProduto/getHistoricoProduto/2024-07-25 ">Testar</a>
-            <a href="<?= baseUrl() ?>Relatorio/getDados/dia/2024-07-27/default/1 ">relario</a> -->
-
-
-
 
             <p>Departamento de Informática Rosário da Limeira - MG</p>
             <span>© 2024 Company, Inc</span>

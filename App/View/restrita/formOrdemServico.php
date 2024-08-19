@@ -36,10 +36,6 @@
 
     $dadosMovimentacao = isset($_SESSION['ordem_servico'][0]) ? $_SESSION['ordem_servico'][0] : [];
     $total = 0;
-
-    // unset($_SESSION['ordem_servico']);
-    // var_dump($dados);
-    // var_dump( $_SESSION['ordem_servico'][0]);  
 ?>
 
 <main class="container mt-5">
@@ -89,7 +85,6 @@
         </div>
     </div>
 
-    <a href="<?= baseUrl()?>/OrdemServico/getPecaComboBox/a">Testar</a>
     <!-- pega se é insert, delete ou update a partir do metodo get assim mandando para a página correspondente -->
     <form class="g-3" action="<?= baseUrl() ?>OrdemServico/<?= $this->getAcao() ?>" method="POST" id="form">
 
@@ -291,6 +286,7 @@
                 <?php if($this->getAcao() != 'insert') : ?>
                     <?php
                             foreach ($dados['aPeca'] as $row) {
+                           
                         ?>
                         <tr>
                             <td><?= $row['id_peca'] ?></td>
@@ -339,9 +335,10 @@
                 <?= Formulario::botao('voltar') ?>
             <?php endif; ?>
 
-            <?php if($this->getAcao() != 'insert' || $this->getAcao() != 'delete') : ?>
+            <?php if($this->getAcao() != 'insert' && $this->getAcao() != 'delete') : ?>
                 <a target="parent" href="<?= baseUrl() . 'OrdemServico/requireimprimirOS/' . setValor('id') ?>" class="btn btn-primary btn-sm">Imprimir ordem de serviço</a>
             <?php endif; ?>
+
             </div>
         </div>
     </form>

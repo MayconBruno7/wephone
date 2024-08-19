@@ -10,7 +10,7 @@ use App\Library\Formulario;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Controle de estoque</title>
+    <title>We Phone - Controle estoque</title>
 
     <link rel="stylesheet" href="<?= baseUrl() ?>assets/bootstrap/css/bootstrap.min.css">
     <link rel="icon" href="<?= baseUrl() ?>assets/img/brasao-pmrl-icon.jpeg" type="image/jpeg">
@@ -286,7 +286,7 @@ use App\Library\Formulario;
     <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
             <div class="sidebar-brand mb-1">
-                <a href="<?= Session::get('usuarioId') ? baseUrl() . Formulario::retornaHomeAdminOuHome() : '#' ?>"> <img alt="imagem" src="<?= baseUrl() ?>assets/img/wephonelogo" width="65" height="80"  /> 
+                <a href="<?= Session::get('usuarioId') ? baseUrl() . Formulario::retornaHomeAdminOuHome() : '#' ?>"> <img alt="imagem" src="<?= baseUrl() ?>assets/img/wephonelogo.jpg" width="65" height="80"  /> 
                 </a>
             </div>
             <?php if (Session::get('usuarioId') != false): ?>
