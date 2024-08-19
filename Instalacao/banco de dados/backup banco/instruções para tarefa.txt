@@ -1,0 +1,27 @@
+1. Configuração do Tempo no Task Scheduler (taskschd.msc)
+Abra o Task Scheduler:
+
+Pressione Win + R, digite taskschd.msc, e pressione Enter.
+Crie uma nova tarefa:
+
+No painel direito, clique em "Create Basic Task...".
+Nome e descrição da tarefa:
+
+Dê um nome e uma descrição para a tarefa, por exemplo, "Backup do Banco de Dados".
+Defina o gatilho da tarefa:
+
+Selecione "Daily" para realizar o backup diariamente.
+Clique em "Next".
+Configure o horário de início e a repetição:
+
+Defina a hora de início.
+Clique em "Next".
+Na próxima tela, clique em "Open the Properties dialog for this task when I click Finish" e clique em "Finish".
+Configurar a repetição de hora em hora:
+
+Na janela de propriedades da tarefa, vá para a aba "Triggers".
+Selecione o gatilho que você acabou de criar e clique em "Edit...".
+Na seção "Advanced settings", marque a opção "Repeat task every".
+Defina o intervalo de repetição para "1 hour".
+Defina a duração da repetição para "Indefinitely" ou um período específico.
+Clique em "OK".

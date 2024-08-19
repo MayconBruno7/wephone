@@ -1,0 +1,13 @@
+Windows
+
+Usando o Gerenciador de Tarefas:
+
+Pressione Ctrl + Shift + Esc para abrir o Gerenciador de Tarefas.
+Clique na aba Inicializar.
+Encontre o aplicativo que você deseja que inicie com o Windows.
+Clique com o botão direito sobre o aplicativo e selecione Habilitar.
+
+Adicionando à pasta de Inicialização:
+
+Pressione Win + R, digite shell:startup e pressione Enter. Isso abrirá a pasta de Inicialização.
+Coloque-o iniciaServidor.bat nesta pasta.
