@@ -48,7 +48,7 @@
                     <input type="text" class="form-control" name="telefone" id="telefone" placeholder="Telefone" maxlength="14" required autofocus value="<?= Formulario::formatarTelefone(setValor('telefone')) ?>" oninput="formatarTelefone(this)" <?= $this->getAcao() == 'view' || $this->getAcao() == 'delete' ? 'disabled' : '' ?>>
                 </div>
 
-                <div class="col-3 mt-3">
+                <div class="col-4 mt-3">
                     <label for="cargo" class="form-label">Cargo</label>
                     <select name="cargo" id="cargo" class="form-control" 
                     <?= $this->getAcao() == 'view' || $this->getAcao() == 'delete' ? 'disabled' : '' ?>
@@ -63,7 +63,7 @@
                     </select>
                 </div>
 
-                <div class="col-2">
+                <div class="col-4">
                     <label for="salario" class="form-label mt-3">Salário</label>
                     <!--  verifica se a nome está no banco de dados e retorna essa nome -->
                     <input type="text" class="form-control" name="salario" id="salario" placeholder="Salário R$" required autofocus value="<?= Formulario::formatarSalario(setValor('salario')) ?>" oninput="formatarSalario(this)" <?= $this->getAcao() == 'view' || $this->getAcao() == 'delete' ? 'disabled' : '' ?>>

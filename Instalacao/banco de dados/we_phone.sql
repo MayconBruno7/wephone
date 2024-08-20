@@ -5803,7 +5803,7 @@ CREATE TABLE IF NOT EXISTS `fornecedor` (
 --
 
 INSERT INTO `fornecedor` (`id`, `nome`, `cnpj`, `endereco`, `cidade`, `estado`, `bairro`, `numero`, `telefone`, `statusRegistro`) VALUES
-(1, 'MD COPIADORA LTDA', '44556350000104', 'RUA MARCIANO PINTO', 1959, 13, 'SANTA EFIGENIA', '855', '3299197525', 1);
+(1, 'Apple Computer Brasil Ltda.', '00623904000173', 'Rua Leopoldo Couto de Magalhães Jr.', 1959, 25, 'ITAIM BIBI', '700', '1155030000', 1);
 
 --
 -- Acionadores `fornecedor`
