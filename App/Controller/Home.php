@@ -70,16 +70,4 @@ class Home extends ControllerMain
         return $this->loadView("restrita/home");
     }
 
-
-    /**
-     * criarConta
-     *
-     * @return void
-     */
-    public function criarConta()
-    {
-        $this->loadHelper('Formulario');
-        
-        return $this->loadView("usuario/formCriarConta", []);
-    }
 }

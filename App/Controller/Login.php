@@ -305,33 +305,4 @@ class Login extends ControllerMain
             return $this->loadView("usuario/formRecuperaSenha"); 
         }
     }
-    
-    /**
-     * novaContaVisitante
-     *
-     * @return void
-     */
-    public function novaContaVisitante()
-    {
-        $post           = $this->getPost();
-        $UsuarioModel   = $this->loadModel("Usuario");
-
-       // Valida dados recebidos do formulário
-        if (Validator::make($post, $UsuarioModel->validationRules)) {
-            return Redirect::page("Home/criarConta");
-        } else {
-
-            if ($UsuarioModel->insert([
-                "statusRegistro"    => $post['statusRegistro'],
-                "nivel"             => $post['nivel'],
-                "nome"              => $post['nome'],
-                "email"             => $post['email'],
-                "senha"             => password_hash($post['senha'], PASSWORD_DEFAULT)
-            ])) {
-                return Redirect::page("Home/Login", ["msgSuccess" => "Usuário criado com sucesso !"]);
-            } else {
-                return Redirect::page("Home/criarConta", ["msgError" => "Falha na criação do Usuário !"]);
-            }
-        }
-    }
 }

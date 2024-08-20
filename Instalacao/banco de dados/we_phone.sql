@@ -3,11 +3,12 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 13/08/2024 às 13:55
+-- Tempo de geração: 20/08/2024 às 00:16
 -- Versão do servidor: 8.3.0
 -- Versão do PHP: 8.2.18
 
 SET FOREIGN_KEY_CHECKS=0;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -21,7 +22,6 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `we_phone`
 --
-
 CREATE DATABASE IF NOT EXISTS `we_phone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `we_phone`;
 
@@ -37,32 +37,18 @@ CREATE TABLE IF NOT EXISTS `cargo` (
   `nome` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
   `statusRegistro` int DEFAULT '1' COMMENT '1 - Ativo    2 - Inativo',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `cargo`
 --
 
 INSERT INTO `cargo` (`id`, `nome`, `statusRegistro`) VALUES
-(1, 'Técnico em Informática', 1);
+(1, 'Atendente', 1);
 
 --
 -- Acionadores `cargo`
 --
-DROP TRIGGER IF EXISTS `tg_delete_log_info_cargo`;
-DELIMITER $$
-CREATE TRIGGER `tg_delete_log_info_cargo` AFTER DELETE ON `cargo` FOR EACH ROW BEGIN
-    INSERT INTO `logs` (tabela, acao, data, usuario, dados_antigos)
-    VALUES (
-        'cargo',
-        'DELETE',
-        CURRENT_TIMESTAMP,
-        @current_user, -- Se você estiver usando uma variável de sessão ou contexto para o usuário
-        CONCAT('{"id":', OLD.id, ', "nome":"', OLD.nome, '", "statusRegistro":', OLD.statusRegistro, '}')
-    );
-END
-$$
-DELIMITER ;
 DROP TRIGGER IF EXISTS `tg_insert_log_info_cargo`;
 DELIMITER $$
 CREATE TRIGGER `tg_insert_log_info_cargo` AFTER INSERT ON `cargo` FOR EACH ROW BEGIN
@@ -107,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `cidade` (
   `estado` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `estado` (`estado`)
-) ENGINE=InnoDB AUTO_INCREMENT=6120 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `cidade`
@@ -4268,8 +4254,7 @@ INSERT INTO `cidade` (`id`, `nome`, `codigo_municipio`, `estado`) VALUES
 (4150, 'ROQUE GONZALES', '4316303', 21),
 (4151, 'ROSARIO DO SUL', '4316402', 21),
 (4152, 'SAGRADA FAMILIA', '4316428', 21),
-(4153, 'SALDANHA MARINHO', '4316436', 21);
-INSERT INTO `cidade` (`id`, `nome`, `codigo_municipio`, `estado`) VALUES
+(4153, 'SALDANHA MARINHO', '4316436', 21),
 (4154, 'SALTO DO JACUI', '4316451', 21),
 (4155, 'SALVADOR DAS MISSOES', '4316477', 21),
 (4156, 'SALVADOR DO SUL', '4316501', 21),
@@ -5638,8 +5623,7 @@ INSERT INTO `cidade` (`id`, `nome`, `codigo_municipio`, `estado`) VALUES
 (6013, 'PRESIDENTE CASTELLO BRANCO', '4213906', 24),
 (6014, 'PESCARIA BRAVA', '4212650', 24),
 (6015, 'ILHA DE ITAMARACA', '2607604', 17),
-(6016, 'ITAPORANGA D\'AJUDA', '2803203', 26);
-INSERT INTO `cidade` (`id`, `nome`, `codigo_municipio`, `estado`) VALUES
+(6016, 'ITAPORANGA D\'AJUDA', '2803203', 26),
 (6017, 'ITABIRINHA', '3131802', 13),
 (6018, 'PINGO-D\'AGUA', '3150539', 13),
 (6019, 'OLHOS-D\'AGUA', '3145455', 13),
@@ -5757,7 +5741,7 @@ CREATE TABLE IF NOT EXISTS `estado` (
   `sigla` varchar(2) NOT NULL,
   `regiao` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `estado`
@@ -5791,7 +5775,6 @@ INSERT INTO `estado` (`id`, `nome`, `sigla`, `regiao`) VALUES
 (25, 'SAO PAULO', 'SP', 'SUDESTE'),
 (26, 'SERGIPE', 'SE', 'NORDESTE'),
 (27, 'TOCANTINS', 'TO', 'NORTE');
-
 -- --------------------------------------------------------
 
 --
@@ -5813,7 +5796,7 @@ CREATE TABLE IF NOT EXISTS `fornecedor` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `cidade` (`cidade`),
   KEY `estado` (`estado`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `fornecedor`
@@ -5931,13 +5914,13 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
   `imagem` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `cargo` (`cargo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Despejando dados para a tabela `funcionario`
 --
 
 INSERT INTO `funcionario` (`id`, `nome`, `cpf`, `telefone`, `salario`, `statusRegistro`, `cargo`) VALUES
-(1, 'Maycon Bruno', '09068888867', '32984924071', 1412.000000, 1, 1);
+(1, 'Webert Lobato', '09068888867', '32984924695', 1412.000000, 1, 1);
 
 --
 -- Acionadores `funcionario`
@@ -6042,15 +6025,14 @@ CREATE TABLE IF NOT EXISTS `historico_produto` (
   PRIMARY KEY (`id`),
   KEY `fk_historico_itens_itens` (`id_produtos`) USING BTREE,
   KEY `fornecedor_id` (`fornecedor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `historico_produto`
 --
 
-INSERT INTO `historico_produto` (`id`, `id_produtos`, `fornecedor_id`, `nome_produtos`, `descricao_anterior`, `quantidade_anterior`, `status_anterior`, `statusItem_anterior`, `dataMod`) VALUES
-(1, 1, 1, 'Fonte de alimentação ', '<p>Fonte de alimentação de 450W</p>', 0, 2, 1, '0000-00-00 00:00:00');
-
+INSERT INTO `historico_produto` (`id`, `id_produtos`, `nome_produtos`, `descricao_anterior`, `quantidade_anterior`, `status_anterior`, `statusItem_anterior`, `dataMod`) VALUES
+(1, 1,'Capa Iphone 12', 'Capa para iphone 12 transparente', 0, 2, 1, '0000-00-00 00:00:00');
 -- --------------------------------------------------------
 
 --
@@ -6067,7 +6049,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `dados_antigos` text,
   `dados_novos` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -6084,10 +6066,9 @@ CREATE TABLE IF NOT EXISTS `movimentacao` (
   `motivo` varchar(100) NOT NULL,
   `data_pedido` date NOT NULL,
   `data_chegada` date DEFAULT NULL,
-  `tipo_produto` int NOT NULL DEFAULT '1' COMMENT '1 - Produto\r\n2 - Peça',
   PRIMARY KEY (`id`),
   KEY `id_fornecedor` (`id_fornecedor`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Acionadores `movimentacao`
@@ -6220,10 +6201,11 @@ CREATE TABLE IF NOT EXISTS `movimentacao_item` (
   `id_produtos` int NOT NULL,
   `quantidade` int DEFAULT NULL,
   `valor` double(10,2) NOT NULL DEFAULT '0.00',
+  `valor_venda` double(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`),
   KEY `id_movimentacoes` (`id_movimentacoes`) USING BTREE,
   KEY `id_produtos` (`id_produtos`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Acionadores `movimentacao_item`
@@ -6321,7 +6303,6 @@ CREATE TRIGGER `tg_insert_adiciona_historico_atualiza_quantidade_produto` AFTER 
     -- Insere o novo registro na tabela historico_produto
     INSERT INTO `historico_produto` (
         `id_produtos`,
-        `fornecedor_id`,
         `nome_produtos`,
         `descricao_anterior`,
         `quantidade_anterior`,
@@ -6330,7 +6311,6 @@ CREATE TRIGGER `tg_insert_adiciona_historico_atualiza_quantidade_produto` AFTER 
         `dataMod`
     ) VALUES (
         NEW.`id_produtos`,
-        (SELECT `fornecedor` FROM `produto` WHERE `id` = NEW.`id_produtos`),
         (SELECT `nome` FROM `produto` WHERE `id` = NEW.`id_produtos`),
         (SELECT `descricao` FROM `produto` WHERE `id` = NEW.`id_produtos`),
         quantidade_anterior,
@@ -6391,7 +6371,6 @@ CREATE TRIGGER `tg_update_adiciona_historico_atualiza_quantidade_produto` AFTER 
     -- Insere o novo registro na tabela historico_produto
     INSERT INTO `historico_produto` (
         `id_produtos`,
-        `fornecedor_id`,
         `nome_produtos`,
         `descricao_anterior`,
         `quantidade_anterior`,
@@ -6400,7 +6379,6 @@ CREATE TRIGGER `tg_update_adiciona_historico_atualiza_quantidade_produto` AFTER 
         `dataMod`
     ) VALUES (
         NEW.`id_produtos`,
-        (SELECT `fornecedor` FROM `produto` WHERE `id` = NEW.`id_produtos`),
         (SELECT `nome` FROM `produto` WHERE `id` = NEW.`id_produtos`),
         (SELECT `descricao` FROM `produto` WHERE `id` = NEW.`id_produtos`),
         quantidade_anterior,
@@ -6465,7 +6443,7 @@ CREATE TABLE IF NOT EXISTS `ordens_servico` (
   `status` enum('Aberto','Em Andamento','Aguardando Peças','Concluído','Cancelado') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `observacoes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -6482,7 +6460,7 @@ CREATE TABLE IF NOT EXISTS `ordens_servico_pecas` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_ordem_servico` (`id_ordem_servico`),
   KEY `fk_id_peca` (`id_peca`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Acionadores `ordens_servico_pecas`
@@ -6559,18 +6537,16 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `condicao` int DEFAULT '1' COMMENT '1=Novo; 2=Usado',
   `dataMod` timestamp NULL DEFAULT NULL,
   `nome` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `fornecedor` int DEFAULT NULL,
   `tipo_produto` int NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `fk_itens_fornecedor` (`fornecedor`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='Itens - Estoque';
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Itens - Estoque';
 
 --
 -- Despejando dados para a tabela `produto`
 --
 
-INSERT INTO `produto` (`id`, `descricao`, `quantidade`, `statusRegistro`, `condicao`, `dataMod`, `nome`, `fornecedor`) VALUES
-(1, '<p>Fonte de alimentação de 450W</p>', 0, 1, 1, '2024-06-25 13:11:02', 'Fonte de alimentação ', 1);
+INSERT INTO `produto` (`id`, `descricao`, `quantidade`, `statusRegistro`, `condicao`, `dataMod`, `nome`) VALUES
+(1, 'Capa Iphone 12 transparente', 0, 1, 1, '2024-06-25 13:11:02', 'Capa Iphone 12 ');
 
 --
 -- Acionadores `produto`
@@ -6579,7 +6555,7 @@ DROP TRIGGER IF EXISTS `tg_after_delete_produto`;
 DELIMITER $$
 CREATE TRIGGER `tg_after_delete_produto` AFTER DELETE ON `produto` FOR EACH ROW BEGIN
     INSERT INTO `logs` (`tabela`, `acao`, `usuario`, `dados_antigos`)
-    VALUES ('produto', 'DELETE', @current_user, CONCAT('ID: ', OLD.id, ', Nome: ', OLD.nome, ', Descrição: ', OLD.descricao, ', Quantidade: ', OLD.quantidade, ', Fornecedor: ', OLD.fornecedor));
+    VALUES ('produto', 'DELETE', @current_user, CONCAT('ID: ', OLD.id, ', Nome: ', OLD.nome, ', Descrição: ', OLD.descricao, ', Quantidade: ', OLD.quantidade));
 END
 $$
 DELIMITER ;
@@ -6587,7 +6563,7 @@ DROP TRIGGER IF EXISTS `tg_after_insert_produto`;
 DELIMITER $$
 CREATE TRIGGER `tg_after_insert_produto` AFTER INSERT ON `produto` FOR EACH ROW BEGIN
     INSERT INTO `logs` (`tabela`, `acao`, `usuario`, `dados_novos`)
-    VALUES ('produto', 'INSERT', @current_user, CONCAT('ID: ', NEW.id, ', Nome: ', NEW.nome, ', Descrição: ', NEW.descricao, ', Quantidade: ', NEW.quantidade, ', Fornecedor: ', NEW.fornecedor));
+    VALUES ('produto', 'INSERT', @current_user, CONCAT('ID: ', NEW.id, ', Nome: ', NEW.nome, ', Descrição: ', NEW.descricao, ', Quantidade: ', NEW.quantidade));
 END
 $$
 DELIMITER ;
@@ -6595,14 +6571,13 @@ DROP TRIGGER IF EXISTS `tg_after_update_produto`;
 DELIMITER $$
 CREATE TRIGGER `tg_after_update_produto` AFTER UPDATE ON `produto` FOR EACH ROW BEGIN
     INSERT INTO `logs` (`tabela`, `acao`, `usuario`, `dados_antigos`, `dados_novos`)
-    VALUES ('produto', 'UPDATE', @current_user, CONCAT('ID: ', OLD.id, ', Nome: ', OLD.nome, ', Descrição: ', OLD.descricao, ', Quantidade: ', OLD.quantidade, ', Fornecedor: ', OLD.fornecedor),
-            CONCAT('ID: ', NEW.id, ', Nome: ', NEW.nome, ', Descrição: ', NEW.descricao, ', Quantidade: ', NEW.quantidade, ', Fornecedor: ', NEW.fornecedor));
+    VALUES ('produto', 'UPDATE', @current_user, CONCAT('ID: ', OLD.id, ', Nome: ', OLD.nome, ', Descrição: ', OLD.descricao, ', Quantidade: ', OLD.quantidade),
+            CONCAT('ID: ', NEW.id, ', Nome: ', NEW.nome, ', Descrição: ', NEW.descricao, ', Quantidade: ', NEW.quantidade));
 END
 $$
 DELIMITER ;
 
 -- --------------------------------------------------------
-
 
 --
 -- Estrutura para tabela `usuario`
@@ -6620,7 +6595,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `id_funcionario` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_funcionario` (`id_funcionario`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Acionadores `usuario`
@@ -6722,61 +6697,65 @@ CREATE TABLE IF NOT EXISTS `usuariorecuperasenha` (
 -- Restrições para tabelas despejadas
 --
 
+--
 -- Restrições para tabelas `cidade`
 --
 ALTER TABLE `cidade`
   ADD CONSTRAINT `fk_id_estado` FOREIGN KEY (`estado`) REFERENCES `estado` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+--
 -- Restrições para tabelas `fornecedor`
 --
 ALTER TABLE `fornecedor`
   ADD CONSTRAINT `fk_cidade` FOREIGN KEY (`cidade`) REFERENCES `cidade` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fk_estado` FOREIGN KEY (`estado`) REFERENCES `estado` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+--
 -- Restrições para tabelas `funcionario`
 --
 ALTER TABLE `funcionario`
   ADD CONSTRAINT `fk_id_cargo` FOREIGN KEY (`cargo`) REFERENCES `cargo` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+--
 -- Restrições para tabelas `historico_produto`
 --
 ALTER TABLE `historico_produto`
   ADD CONSTRAINT `fk_id_produto` FOREIGN KEY (`id_produtos`) REFERENCES `produto` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+--
 -- Restrições para tabelas `movimentacao`
 --
 ALTER TABLE `movimentacao`
   ADD CONSTRAINT `fk_id_fornecedores` FOREIGN KEY (`id_fornecedor`) REFERENCES `fornecedor` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+--
 -- Restrições para tabelas `movimentacao_item`
 --
 ALTER TABLE `movimentacao_item`
   ADD CONSTRAINT `fk_id_movimentacoes` FOREIGN KEY (`id_movimentacoes`) REFERENCES `movimentacao` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fk_id_produtos` FOREIGN KEY (`id_produtos`) REFERENCES `produto` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+--
 -- Restrições para tabelas `ordens_servico_pecas`
 --
 ALTER TABLE `ordens_servico_pecas`
   ADD CONSTRAINT `fk_id_peca` FOREIGN KEY (`id_peca`) REFERENCES `produto` (`id`),
   ADD CONSTRAINT `fk_ordem_servico` FOREIGN KEY (`id_ordem_servico`) REFERENCES `ordens_servico` (`id`);
 
--- Restrições para tabelas `produto`
 --
-ALTER TABLE `produto`
-  ADD CONSTRAINT `fk_id_fornecedor` FOREIGN KEY (`fornecedor`) REFERENCES `fornecedor` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
 -- Restrições para tabelas `usuario`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `fk_id_funcionario` FOREIGN KEY (`id_funcionario`) REFERENCES `funcionario` (`id`);
 
+--
 -- Restrições para tabelas `usuariorecuperasenha`
 --
 ALTER TABLE `usuariorecuperasenha`
   ADD CONSTRAINT `fk_usuariorecuperasenha` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`);
+COMMIT;
 
 SET FOREIGN_KEY_CHECKS=1;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
