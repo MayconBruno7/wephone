@@ -6060,7 +6060,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
 DROP TABLE IF EXISTS `movimentacao`;
 CREATE TABLE IF NOT EXISTS `movimentacao` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_fornecedor` int NOT NULL,
+  `id_fornecedor` INT,
   `statusRegistro` int NOT NULL COMMENT '1 - Ativo   2 - Inativo',
   `tipo` int NOT NULL COMMENT '1 - Entrada    2 - Saida',
   `motivo` varchar(100) NOT NULL,
@@ -6200,7 +6200,7 @@ CREATE TABLE IF NOT EXISTS `movimentacao_item` (
   `id_movimentacoes` int NOT NULL,
   `id_produtos` int NOT NULL,
   `quantidade` int DEFAULT NULL,
-  `valor` double(10,2) NOT NULL DEFAULT '0.00',
+  `valor` double(10,2) DEFAULT '0.00',
   `valor_venda` double(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`),
   KEY `id_movimentacoes` (`id_movimentacoes`) USING BTREE,
