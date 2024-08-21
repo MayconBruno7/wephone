@@ -40,25 +40,26 @@ Class ProdutoModel extends ModelMain
 
         if (Session::get('usuarioNivel') == 1) {
             $rsc = $this->db->dbSelect(
-
                 "SELECT 
-                        produto.*, 
-                        (SELECT valor FROM movimentacao_item WHERE id_produtos = produto.id LIMIT 1) AS valor
-                    FROM 
-                    {$this->table}"
-            
-            );
-            
-        } else {
-
-            $rsc = $this->db->dbSelect("SELECT 
                     produto.*, 
                     (SELECT valor FROM movimentacao_item WHERE id_produtos = produto.id LIMIT 1) AS valor
                 FROM 
-                {$this->table}
-                WHERE statusRegistro = 1 AND quantidade > 0");
-  
+                    {$this->table}
+                ORDER BY produto.id DESC"  // Adicionei ORDER BY produto.id para usar DESC
+            );
+        } else {
+            $rsc = $this->db->dbSelect(
+                "SELECT 
+                    produto.*, 
+                    (SELECT valor FROM movimentacao_item WHERE id_produtos = produto.id LIMIT 1) AS valor
+                FROM 
+                    {$this->table}
+                WHERE 
+                    statusRegistro = 1 AND quantidade > 0
+                ORDER BY produto.id DESC"  // Adicionei ORDER BY produto.id para usar DESC
+            );
         }
+        
         
         if ($this->db->dbNumeroLinhas($rsc) > 0) {
             return $this->db->dbBuscaArrayAll($rsc);
@@ -123,9 +124,21 @@ Class ProdutoModel extends ModelMain
     public function recuperaPeca($idPeca)
     {
 
-        $rsc = $this->db->dbSelect("SELECT p.*,  mi.valor_venda FROM {$this->table} AS p
-                                    INNER JOIN movimentacao_item AS mi ON p.id = mi.id_produtos
-                                    WHERE p.id = ? AND tipo_produto = 2", [$idPeca]);
+        $rsc = $this->db->dbSelect("SELECT 
+            p.*,  
+            (
+                SELECT mi.valor_venda
+                FROM movimentacao_item mi
+                WHERE mi.id_produtos = p.id
+                ORDER BY mi.id_movimentacoes DESC
+                LIMIT 1
+            ) AS valor_venda
+        FROM 
+            {$this->table} AS p
+        WHERE 
+            p.id = ? 
+            AND p.tipo_produto = 2;
+        ", [$idPeca]);
             
         if ($this->db->dbNumeroLinhas($rsc) > 0) {
             return $this->db->dbBuscaArrayAll($rsc);
@@ -183,22 +196,25 @@ Class ProdutoModel extends ModelMain
     {
 
         $rsc = $this->db->dbSelect("SELECT 
-                osp.id_ordem_servico,
-                osp.id_peca,
-                osp.quantidade AS quantidade_peca_ordem,
-                p.*,
-                mi.valor_venda AS valor_peca 
-            FROM 
-                {$this->table} p
-            INNER JOIN 
-                ordens_servico_pecas osp ON p.id = osp.id_peca
-            LEFT JOIN 
-                movimentacao_item mi ON osp.id_peca = mi.id_produtos
-            WHERE 
-                osp.id_ordem_servico = ?
-            ORDER BY 
-                p.id;
-            ",
+            osp.id_ordem_servico,
+            osp.id_peca,
+            osp.quantidade AS quantidade_peca_ordem,
+            p.*,
+            (
+                SELECT mi.valor_venda 
+                FROM movimentacao_item mi 
+                WHERE mi.id_produtos = osp.id_peca 
+                ORDER BY mi.id_movimentacoes DESC 
+                LIMIT 1
+            ) AS valor_peca 
+        FROM 
+            {$this->table} p
+        INNER JOIN 
+            ordens_servico_pecas osp ON p.id = osp.id_peca
+        WHERE 
+            osp.id_ordem_servico = ?
+        ORDER BY 
+            p.id;",
         $id_ordem_servico);
 
         if ($this->db->dbNumeroLinhas($rsc) > 0) {

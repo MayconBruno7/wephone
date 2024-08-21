@@ -27,10 +27,10 @@ Class CargoModel extends ModelMain
     public function lista($orderBy = 'id')
     {
         if (Session::get('usuarioNivel') == 1) {
-            $rsc = $this->db->dbSelect("SELECT * FROM cargo ORDER BY {$orderBy}");
+            $rsc = $this->db->dbSelect("SELECT * FROM cargo ORDER BY {$orderBy} DESC");
             
         } else {
-            $rsc = $this->db->dbSelect("SELECT * FROM cargo WHERE statusRegistro = 1 ORDER BY {$orderBy}");
+            $rsc = $this->db->dbSelect("SELECT * FROM cargo WHERE statusRegistro = 1 ORDER BY {$orderBy} DESC");
             
         }
 

@@ -265,6 +265,7 @@
                             Data: data.labels[i],
                             Descricao: data.descricoes[i],
                             Valor: data.valores[i],
+                            Valor_venda: data.valores_venda[i],
                             Entrada: data.entradas[i],
                             Saida: data.saidas[i]
                         });
@@ -389,39 +390,40 @@
                                 borderWidth: 1
                             }]
                         },
-options: {
-    responsive: true,
-    scales: {
-        y: {
-            beginAtZero: true
-        }
-    },
-    plugins: {
-        tooltip: {
-            callbacks: {
-                label: function(tooltipItem) {
-                    let index = tooltipItem.dataIndex;
-                    let entrada = data.entradas[index];
-                    let saida = data.saidas[index];
-                    let descricao = data.descricoes[index];
-                    let valor = data.valores[index];
-                    return `Data: ${tooltipItem.label}\nProduto: ${descricao}\nValor: ${valor}\nEntradas: ${entrada}\nSaídas: ${saida}`;
-                }
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(tooltipItem) {
+                                            let index = tooltipItem.dataIndex;
+                                            let entrada = data.entradas[index];
+                                            let saida = data.saidas[index];
+                                            let descricao = data.descricoes[index];
+                                            let valor = data.valores[index];
+                                            let valor_venda = data.valores_venda[index];
+                                            return `Data: ${tooltipItem.label}\nProduto: ${descricao}\nValor: ${valor}\nValor de venda: ${valor_venda}\nEntradas: ${entrada}\nSaídas: ${saida}`;
+                                        }
 
-            },
-            displayColors: false, // Oculta a exibição das cores
-            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Cor de fundo do tooltip
-            bodyFontColor: '#fff', // Cor do texto dentro do tooltip
-            titleFontColor: '#fff', // Cor do título do tooltip
-            bodyFontSize: 14, // Tamanho da fonte do texto dentro do tooltip
-            bodySpacing: 6, // Espaçamento entre linhas dentro do tooltip
-            cornerRadius: 8, // Raio do canto do tooltip
-            caretPadding: 10, // Espaçamento entre a borda do tooltip e a "caret"
-            borderWidth: 1, // Largura da borda do tooltip
-            borderColor: '#ccc' // Cor da borda do tooltip
-        }
-    }
-}
+                                    },
+                                    displayColors: false, // Oculta a exibição das cores
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Cor de fundo do tooltip
+                                    bodyFontColor: '#fff', // Cor do texto dentro do tooltip
+                                    titleFontColor: '#fff', // Cor do título do tooltip
+                                    bodyFontSize: 14, // Tamanho da fonte do texto dentro do tooltip
+                                    bodySpacing: 6, // Espaçamento entre linhas dentro do tooltip
+                                    cornerRadius: 8, // Raio do canto do tooltip
+                                    caretPadding: 10, // Espaçamento entre a borda do tooltip e a "caret"
+                                    borderWidth: 1, // Largura da borda do tooltip
+                                    borderColor: '#ccc' // Cor da borda do tooltip
+                                }
+                            }
+                        }
                     });
                     renderRelatorioHtml(data); // Renderiza os dados em formato HTML
                 });
@@ -431,13 +433,14 @@ options: {
         function renderRelatorioHtml(data) {
             var html = '<h3>Relatório de Movimentações</h3>';
             html += '<table class="table table-striped">';
-            html += '<thead><tr><th>Data</th><th>Produto</th><th>Valor</th><th>Entradas</th><th>Saídas</th></tr></thead>';
+            html += '<thead><tr><th>Data</th><th>Produto</th><th>Valor</th><th>Valor</th><th>Entradas</th><th>Saídas</th></tr></thead>';
             html += '<tbody>';
             for (var i = 0; i < data.labels.length; i++) {
                 html += '<tr>';
                 html += `<td>${data.labels[i]}</td>`;
                 html += `<td>${data.descricoes[i]}</td>`;
                 html += `<td>${data.valores[i]}</td>`;
+                html += `<td>${data.valores_venda[i]}</td>`;
                 html += `<td>${data.entradas[i]}</td>`;
                 html += `<td>${data.saidas[i]}</td>`;
                 html += '</tr>';

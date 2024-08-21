@@ -20,6 +20,10 @@ Class FuncionarioModel extends ModelMain
             'label' => 'salario',
             'rules' => 'required|decimal'
         ],
+        'telefone' => [
+            'label' => 'telefone',
+            'rules' => 'required|min:15'
+        ],
         'statusRegistro' => [
             'label' => 'Status',
             'rules' => 'required|int'
@@ -36,10 +40,10 @@ Class FuncionarioModel extends ModelMain
     {
         if (Session::get('usuarioNivel') == 1) {
             // $rsc = $this->db->dbSelect("SELECT * FROM {$this->table} ORDER BY {$orderBy}");
-            $rsc = $this->db->dbSelect("SELECT * FROM {$this->table}  ORDER BY {$orderBy}");
+            $rsc = $this->db->dbSelect("SELECT * FROM {$this->table}  ORDER BY {$orderBy} DESC");
             
         } else {
-            $rsc = $this->db->dbSelect("SELECT * FROM {$this->table} WHERE statusRegistro = 1 ORDER BY {$orderBy}");
+            $rsc = $this->db->dbSelect("SELECT * FROM {$this->table} WHERE statusRegistro = 1 ORDER BY {$orderBy} DESC");
             
         }
 

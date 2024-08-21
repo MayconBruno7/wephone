@@ -40,11 +40,11 @@
 
 <main class="container mt-5">
 
-    <div class="modal fade" id="modalAdicionarProduto" tabindex="-1" aria-labelledby="modalAdicionarProdutoLabel" aria-hidden="true">
+    <div class="modal fade" id="modalAdicionarPeca" tabindex="-1" aria-labelledby="modalAdicionarPecaLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalAdicionarProdutoLabel">Adicionar peça</h5>
+                    <h5 class="modal-title" id="modalAdicionarPecaLabel">Adicionar peça</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -58,11 +58,13 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <label for="quantidade" class="form-label">Quantidade</label>
                             <input type="number" class="form-control" id="quantidade" name="quantidade" required>
                         </div>
 
+                        <input type="hidden" class="form-control" id="valor" name="valor" required>
                         <input type="hidden" name="id_ordem_servico" value="<?= $this->getId() ?>">
                         
                         <button type="submit" class="btn btn-primary">Adicionar</button>
@@ -136,7 +138,7 @@
 
             <div class="col-12 mt-3">
                 <label for="data_abertura" class="form-label">Data de Abertura:</label>
-                <input type="date" id="data_abertura"  class="form-control" name="data_abertura" value="<?= isset($dadosMovimentacao['data_abertura']) ? $dadosMovimentacao['data_abertura'] : "" ?>" required>
+                <input type="date" id="data_abertura"  class="form-control" name="data_abertura" value="<?= isset($dadosMovimentacao['data_abertura']) ? $dadosMovimentacao['data_abertura'] : "" ?>" required max="<?= date('Y-m-d') ?>">
             </div>
 
             <div class="col-12 mt-3">
@@ -202,7 +204,7 @@
 
             <div class="col-12 mt-3">
                 <label for="data_abertura" class="form-label">Data de Abertura:</label>
-                <input type="date" id="data_abertura"  class="form-control" name="data_abertura" value="<?= setValor('data_abertura') ?>" required>
+                <input type="date" id="data_abertura"  class="form-control" name="data_abertura" value="<?= setValor('data_abertura') ?>" max="<?= date('Y-m-d') ?>" required>
             </div>
 
             <div class="col-12 mt-3">
@@ -238,7 +240,7 @@
             <div class="col mt-4">
                 <div class="col-auto text-end ml-2">
                 <?php if ($this->getAcao() != "view" && $this->getAcao() != "delete"): ?>
-                    <button type="button" class="btn btn-outline-primary btn-sm" id="<?= ($this->getAcao() == 'insert') ? 'btnSalvar' : '' ?>" <?= ($this->getAcao() != 'insert') ? 'data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto"' : '' ?>>
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="<?= ($this->getAcao() == 'insert') ? 'btnSalvar' : '' ?>" <?= ($this->getAcao() != 'insert') ? 'data-bs-toggle="modal" data-bs-target="#modalAdicionarPeca"' : '' ?>>
                         Adicionar Peça
                     </button>
                 <?php endif; ?>
@@ -267,7 +269,7 @@
                             <td><?= number_format(($produto['quantidade'] * $produto['valor']), 2, ",", ".") ?></td>
                             <td>
                                 <?php if($this->getAcao() != 'delete' && $this->getAcao() != 'view') : ?>
-                                    <a href="<?= baseUrl() ?>Produto/index/delete/<?= $this->getId() ?>/<?= $produto['id_peca'] ?>/<?= $produto['quantidade'] ?>/<?= setValor('tipo') ?>" class="btn btn-outline-danger btn-sm" title="Exclusão">Excluir</a>&nbsp;
+                                    <a href="<?= baseUrl() ?>Produto/index/delete_peca/<?= $this->getId() ?>/<?= $produto['id_peca'] ?>/<?= $produto['quantidade'] ?>/<?= setValor('tipo') ?>" class="btn btn-outline-danger btn-sm" title="Exclusão">Excluir</a>&nbsp;
                                 <?php endif; ?>
                                     <a href="formProdutos.php?acao=view&id=<?= $produto['id_peca'] ?>&id_movimentacoes=<?= isset($idMovimentacaoAtual) ? $idMovimentacaoAtual : "" ?>" class="btn btn-outline-secondary btn-sm" title="Visualização">Visualizar</a>
                             </td>
@@ -286,7 +288,6 @@
                 <?php if($this->getAcao() != 'insert') : ?>
                     <?php
                             foreach ($dados['aPeca'] as $row) {
-                           
                         ?>
                         <tr>
                             <td><?= $row['id_peca'] ?></td>
@@ -296,7 +297,7 @@
                             <td><?= number_format(($row["quantidade_peca_ordem"] * $row["valor_peca"]), 2, ",", ".") ?></td>
                             <td>
                             <?php if($this->getAcao() != 'delete' && $this->getAcao() != 'view') : ?>
-                                    <a href="<?= baseUrl() ?>Produto/index/delete_peca/<?= $this->getId() ?>/<?= $row['id_peca'] ?>/<?= $row['quantidade'] ?>/1" class="btn btn-outline-danger btn-sm" title="Exclusão">Excluir</a>&nbsp;
+                                    <a href="<?= baseUrl() ?>Produto/index/delete_peca/<?= $this->getId() ?>/<?= $row['id_peca'] ?>/<?= $row['quantidade_peca_ordem'] ?>/1" class="btn btn-outline-danger btn-sm" title="Exclusão">Excluir</a>&nbsp;
                                 <?php endif; ?>
                                     <a href="formProdutos.php?acao=view&id=<?= $row['id_peca'] ?>&id_movimentacoes=<?= isset($idMovimentacaoAtual) ? $idMovimentacaoAtual : "" ?>" class="btn btn-outline-secondary btn-sm" title="Visualização">Visualizar</a>
                             </td>
@@ -343,7 +344,6 @@
         </div>
     </form>
 
-    <!-- <button onclick="capturarValores()">Salvar na Sessão</button> -->
 </main>
 
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
@@ -445,8 +445,7 @@
 
             // Função para abrir o modal
             function abrirModal() {
-                var modal = new bootstrap.Modal(document.getElementById('modalAdicionarProduto'));
-                modal.show();
+                $('#modalAdicionarPeca').modal('show');
             }
 
             // Envia os dados para o PHP usando AJAX

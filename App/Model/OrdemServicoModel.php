@@ -29,42 +29,39 @@ Class OrdemServicoModel extends ModelMain
      */
     public function lista($orderBy = 'id')
     {
-        // if (Session::get('usuarioNivel') == 1) {
-            $rsc = $this->db->dbSelect("SELECT
-                os.id AS ordem_id,
-                os.cliente_nome,
-                os.telefone_cliente,
-                os.modelo_dispositivo,
-                os.imei_dispositivo,
-                os.descricao_servico,
-                os.tipo_servico,
-                os.problema_reportado,
-                os.data_abertura,
-                os.data_fechamento,
-                os.status,
-                os.observacoes,
-                osp.quantidade AS quantidade_peca_ordem,
-                p.id AS peca_id,
-                p.nome AS nome_peca,
-                p.descricao,
-                mi.valor_venda AS valor_peca -- Coluna de valor da tabela movimentacao_item
-            FROM
-                ordens_servico os
-            LEFT JOIN
-                ordens_servico_pecas osp ON os.id = osp.id_ordem_servico
-            LEFT JOIN
-                produto p ON osp.id_peca = p.id
-            LEFT JOIN
-                movimentacao_item mi ON osp.id_peca = mi.id_produtos
-            WHERE
-                p.tipo_produto = 2 OR p.id IS NULL;
-            ");
-            
-        // } 
-        // else {
-        //     $rsc = $this->db->dbSelect("SELECT * FROM logs ORDER BY {$orderBy}");
-            
-        // }
+
+        $rsc = $this->db->dbSelect("SELECT
+            os.id AS ordem_id,
+            os.cliente_nome,
+            os.telefone_cliente,
+            os.modelo_dispositivo,
+            os.imei_dispositivo,
+            os.descricao_servico,
+            os.tipo_servico,
+            os.problema_reportado,
+            os.data_abertura,
+            os.data_fechamento,
+            os.status,
+            os.observacoes,
+            GROUP_CONCAT(DISTINCT p.id ORDER BY p.id ASC) AS peca_id,  -- Concatenar IDs das peças
+            GROUP_CONCAT(DISTINCT p.nome ORDER BY p.nome ASC) AS nome_peca,  -- Concatenar nomes das peças
+            GROUP_CONCAT(DISTINCT p.descricao ORDER BY p.descricao ASC) AS descricao_peca,  -- Concatenar descrições das peças
+            GROUP_CONCAT(DISTINCT mi.valor_venda ORDER BY mi.valor_venda ASC) AS valor_peca -- Concatenar valores das peças
+        FROM
+            ordens_servico os
+        LEFT JOIN
+            ordens_servico_pecas osp ON os.id = osp.id_ordem_servico
+        LEFT JOIN
+            produto p ON osp.id_peca = p.id
+        LEFT JOIN
+            movimentacao_item mi ON osp.id_peca = mi.id_produtos
+        WHERE
+            p.tipo_produto = 2 OR p.id IS NULL
+        GROUP BY
+            os.id  -- Agrupando por ID da ordem de serviço
+        ORDER BY
+            os.id DESC;");  // Ordenando as ordens de serviço por ID em ordem decrescente
+
 
         if ($this->db->dbNumeroLinhas($rsc) > 0) {
             return $this->db->dbBuscaArrayAll($rsc);
@@ -362,11 +359,15 @@ Class OrdemServicoModel extends ModelMain
             if(!empty($id_peca)) {
                 $result_pecas = $this->db->dbSelect("SELECT 
                     p.*,
-                    mi.valor_venda
+                    (
+                        SELECT mi.valor_venda
+                        FROM movimentacao_item mi
+                        WHERE mi.id_produtos = p.id
+                        ORDER BY mi.id_movimentacoes DESC
+                        LIMIT 1
+                    ) AS valor_venda
                 FROM 
                     produto p
-                INNER JOIN 
-                    movimentacao_item mi ON p.id = mi.id_produtos
                 WHERE 
                     p.id = ?;"
                     ,

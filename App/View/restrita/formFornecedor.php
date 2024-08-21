@@ -9,9 +9,6 @@
 
 <div class="container">
 
-<a href="<?= baseUrl() ?>Fornecedor/requireAPI/">teste</a>
-    
-        
     <div class="container" style="margin-top: 100px;">
         <?= Formulario::titulo('Fornecedor', false, false) ?>
     </div>

@@ -16,9 +16,9 @@ class OrdemServico extends ControllerMain
     {
         $this->auxiliarConstruct($dados);
 
-        // Somente pode ser acessado por usuários adminsitradores
-        if (!$this->getAdministrador()) {
-            return Redirect::page("Home");
+        // Só acessa se tiver logado
+        if (!$this->getUsuario()) {
+            return Redirect::page("Home/login");
         }
     }
 
@@ -43,7 +43,8 @@ class OrdemServico extends ControllerMain
 
         $PecaModel = $this->loadModel("Produto");
         $dados['aPeca'] = $PecaModel->listaPeca($this->getId());
-        
+
+        // exit('opa');
         if ($this->getAcao() != "insert") {
             $registro = $this->model->getById($this->getId());
             if (is_array($registro)) {
@@ -224,7 +225,7 @@ class OrdemServico extends ControllerMain
             }
 
             Session::set("msgSuccess", "Peça adicionada a ordem de serviço.");
-            Redirect::page("OrdemServico/form/insert/0");
+            Redirect::page("OrdemServico/form/insert/0/" . $id_peca);
         }
     }
 
@@ -240,7 +241,7 @@ class OrdemServico extends ControllerMain
         if (
             isset($post['cliente_nome']) || isset($post['telefone_cliente']) || isset($post['modelo_dispositivo']) || isset($post['imei_dispositivo']) ||
             isset($post['tipo_servico']) || isset($post['descricao_servico']) || isset($post['problema_reportado']) || isset($post['data_abertura']) || 
-            isset($post['status']) || isset($post['observacoes']) || isset($post['quantidade']) || isset($post['id_peca']) || isset($post['valor'])) {
+            isset($post['status']) || isset($post['observacoes']) || isset($post['quantidade']) || isset($post['id_peca'])) {
             
             // Dados da ordem de servico
             $id_ordem_servico = isset($post['id']) ? $post['id'] : $post['id_ordem_servico'];
@@ -258,7 +259,7 @@ class OrdemServico extends ControllerMain
             // Dados da peça
             $quantidade = isset($post['quantidade']) ? (int)$post['quantidade'] : '';
             $id_peca = isset($post['id_peca']) ? (int)$post['id_peca'] : '';
-            $valor_peca = isset($post['valor']) ? (float)$post['valor'] : '';
+            // $valor_peca = isset($post['valor']) ? (float)$post['valor'] : '';
             
             $produtoMovAtualizado = isset($_SESSION['produto_mov_atualizado']) ? $_SESSION['produto_mov_atualizado'] : [];
             
@@ -270,6 +271,7 @@ class OrdemServico extends ControllerMain
             $dadosItensOrdemServico = $OrdemServicoItemModel->recuperaPecaOS($id_peca, $id_ordem_servico);
 
             $quantidade_ordem_servico = isset($dadosItensOrdemServico[0]['quantidade']) ? $dadosItensOrdemServico[0]['quantidade'] : "" ;
+            
             
             if (!empty($dadosItensOrdemServico)) {
              
@@ -308,7 +310,7 @@ class OrdemServico extends ControllerMain
             }
         
             if ($this->getAcao() != 'updateProdutoOrdemServico') {
-              
+   
                 if (!$verificaQuantidadeEstoqueNegativa) {
                     $AtualizandoOrdemServicoEProdutos = $this->model->updateOrdemServico(
                         [
@@ -330,7 +332,7 @@ class OrdemServico extends ControllerMain
                             [
                                 "id_peca"       => $id_peca,
                                 "quantidade"    => $quantidade,
-                                "valor"         => $valor_peca
+                                // "valor"         => $valor_peca
                             ]
                         ],
 
@@ -353,7 +355,7 @@ class OrdemServico extends ControllerMain
                 }
 
             } else if ($this->getAcao() == 'updateProdutoOrdemServico') {
-                
+   
                 if (!$verificaQuantidadeEstoqueNegativa) {
                     $AtualizandoInfoProdutoOrdemServico = $this->model->updateInformacoesProdutoOrdemServico(
                         [

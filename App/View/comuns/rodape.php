@@ -111,7 +111,7 @@
         
         <footer class="main-footer mt-4">
 
-            <p>Departamento de Informática Rosário da Limeira - MG</p>
+            <p>MB Tech</p>
             <span>© 2024 Company, Inc</span>
 
             <?php 

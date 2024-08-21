@@ -55,7 +55,7 @@
                                         <td><?= Formulario::getStatusDescricao($value['statusRegistro']) ?></td>
                                         <td>
                                         <?php if ($this->getAcao() == 'delete') : ?>
-                                            <form class="g-3" action="<?= baseUrl() ?>OrdemServico/deleteProdutoOrdemServico/<?= $this->getAcao() ?>" method="post">
+                                            <form class="g-3" action="<?= baseUrl() ?>Movimentacao/deleteProdutoMovimentacao/<?= $this->getAcao() ?>" method="post">
                                                 <p>Quantidade atual: <?= $this->getOutrosParametros(5) ?></p>
                                                 <label for="quantidadeRemover" class="form-label">Quantidade</label>
                                                 <input type="number" name="quantidadeRemover" id="quantidadeRemover" class="form-control" required></input>

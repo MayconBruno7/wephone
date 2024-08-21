@@ -190,16 +190,6 @@ class ControllerMain
         return $this->dados['get'];
     }
 
-    // /**
-    //  * getOutrosParametros
-    //  *
-    //  * @return array
-    //  */
-    // public function getOutrosParametros()
-    // {
-    //     return $this->dados['outrosParametros'];
-    // }
-
 	/**
      * getAdministrador
      *

@@ -120,14 +120,12 @@
         ClassicEditor
             .create(document.querySelector('#descricao'), {})
             .then(editor => { // Definindo o editor CKEditor aqui
-                document.getElementById('historico').addEventListener('change', function() {
+                document.getElementById('search_historico').addEventListener('change', function() {
                     var option = this.options[this.selectedIndex];
                     
                     // Definindo os outros valores conforme necessário
                     document.getElementById('nome').value = option.getAttribute('data-nome');
                     document.getElementById('quantidade').value = option.getAttribute('data-quantidade');
-                    // Definindo o texto do setor e fornecedor nos elementos
-                    document.getElementById('fornecedor_id').value = option.getAttribute('data-fornecedor');
                     document.getElementById('statusRegistro').value = option.getAttribute('data-status');
                     document.getElementById('condicao').value = option.getAttribute('data-statusitem');
                     editor.setData(option.getAttribute('data-descricao')); 
@@ -152,7 +150,7 @@
                     var options = '<option value="" selected disabled>Escolha a data</option>';
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
-                            options += '<option value="' + data[i].id + '" data-nome="' + data[i].nome_produtos + '" data-fornecedor="' + data[i].fornecedor_id + '" data-descricao="' + data[i].descricao_anterior + '" data-quantidade="' + data[i].quantidade_anterior + '" data-status="' + data[i].status_anterior + '" data-statusitem="' + data[i].statusItem_anterior + '">' + (data[i].dataMod != '0000-00-00 00:00:00' ? data[i].dataMod : 'Primeira alteração') + '</option>';
+                            options += '<option value="' + data[i].id + '" data-nome="' + data[i].nome_produtos + '" data-descricao="' + data[i].descricao_anterior + '" data-quantidade="' + data[i].quantidade_anterior + '" data-status="' + data[i].status_anterior + '" data-statusitem="' + data[i].statusItem_anterior + '">' + (data[i].dataMod != '0000-00-00 00:00:00' ? data[i].dataMod : 'Primeira alteração') + '</option>';
                         }
                     } else {
                         options = '<option value="" selected disabled>Nenhum histórico encontrado</option>';
@@ -164,7 +162,6 @@
                         var firstItem = data[0];
                         $('#nome').val(firstItem.nome_produtos);
                         $('#quantidade').val(firstItem.quantidade_anterior);
-                        $('#fornecedor_id').val(firstItem.fornecedor_id);
                         $('#statusRegistro').val(firstItem.status_anterior);
                         $('#condicao').val(firstItem.statusItem_anterior);
                         $('#descricao').val(firstItem.descricao_anterior);
@@ -188,7 +185,6 @@
             // Atualizar o formulário com os dados do item selecionado
             $('#nome').val(selectedOption.data('nome'));
             $('#quantidade').val(selectedOption.data('quantidade'));
-            $('#fornecedor_id').val(selectedOption.data('fornecedor'));
             $('#statusRegistro').val(selectedOption.data('status'));
             $('#condicao').val(selectedOption.data('statusitem'));
             $('#descricao').val(selectedOption.data('descricao'));

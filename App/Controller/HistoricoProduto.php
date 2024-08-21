@@ -23,17 +23,6 @@ class HistoricoProduto extends ControllerMain
 
     }
 
-    // /**
-    //  * index
-    //  *
-    //  * @return void
-    //  */
-    // public function index()
-    // {
-        
-    //     $this->loadView("restrita/HistoricoProdutoMovimentacao", $this->model->historico_produto_movimentacao($this->getId()));
-    // }
-
     public function getHistoricoProduto()
     {
 

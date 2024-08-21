@@ -6,18 +6,7 @@ use App\Library\Session;
 Class LogModel extends ModelMain
 {
     public $table = "logs";
-
-    // public $validationRules = [
-    //     'nome' => [
-    //         'label' => 'nome',
-    //         'rules' => 'required|min:3|max:50'
-    //     ],
-    //     'statusRegistro' => [
-    //         'label' => 'Status',
-    //         'rules' => 'required|int'
-    //     ]
-    // ];
-
+    
     /**
      * lista
      *
@@ -27,12 +16,9 @@ Class LogModel extends ModelMain
     public function lista($orderBy = 'id')
     {
         if (Session::get('usuarioNivel') == 1) {
-            $rsc = $this->db->dbSelect("SELECT * FROM logs ORDER BY {$orderBy}");
+            $rsc = $this->db->dbSelect("SELECT * FROM logs ORDER BY {$orderBy} DESC");
             
-        } else {
-            $rsc = $this->db->dbSelect("SELECT * FROM logs ORDER BY {$orderBy}");
-            
-        }
+        } 
 
         if ($this->db->dbNumeroLinhas($rsc) > 0) {
             return $this->db->dbBuscaArrayAll($rsc);

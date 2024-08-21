@@ -179,6 +179,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+  
         document.addEventListener('DOMContentLoaded', function() {
             // Obter a data atual
             var today = new Date();
@@ -207,13 +208,12 @@
                             Data: data.labels[i],
                             Descricao: data.descricoes[i],
                             Valor: data.valores[i],
+                            Valor_venda: data.valores_venda[i],
                             Entrada: data.entradas[i],
                             Saida: data.saidas[i],
                             movimentacao: data.id_movimentacao[i]
                         });
                     }
-
-                    // console.log(fetchedData);
 
                     var ctx = document.getElementById('graficoRelatorio').getContext('2d');
 
@@ -271,9 +271,11 @@
                                           let saida = data.saidas[index];
                                           let descricao = data.descricoes[index];
                                           let valor = data.valores[index];
+                                          let valor_venda = data.valores_venda[index];
                                           return `Data: ${tooltipItem.label}\n
                                           Produto: ${descricao}\n
                                           Valor: ${valor}\n
+                                          Valor de venda: ${valor_venda}\n
                                           Entradas: ${entrada}\n
                                           Saídas: ${saida}`;
                                       }
@@ -292,7 +294,7 @@
                                 }
                             }
                         }
-                    });
+                    }); 
                     renderRelatorioHtml(data);
                 });
         });
@@ -319,6 +321,7 @@
           html += '<th>Data</th>';
           html += '<th>Produto</th>';
           html += '<th>Valor</th>';
+          html += '<th>Valor de venda</th>';
           html += '<th>Entradas</th>';
           html += '<th>Saídas</th>';
           html += '<th>Ação</th>';
@@ -333,6 +336,7 @@
               html += `<td>${data.labels[i]}</td>`;
               html += `<td>${data.descricoes[i]}</td>`;
               html += `<td>${data.valores[i]}</td>`;
+              html += `<td>${data.valores_venda[i]}</td>`;
               html += `<td>${data.entradas[i]}</td>`;
               html += `<td>${data.saidas[i]}</td>`;
               html += `<td><a href="<?= baseUrl(); ?>Movimentacao/form/view/${data.id_movimentacao[i]}/home" class="btn btn-outline-primary">Detalhes da movimentação</a></td>`;

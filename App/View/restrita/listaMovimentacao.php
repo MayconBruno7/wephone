@@ -41,7 +41,7 @@
                                 <?php foreach ($aDados as $row): ?>
                                     <tr role="row" class="odd">
                                         <td class="sorting_1"><?= $row['id_movimentacao'] ?></td>
-                                        <td><?= $row['nome_fornecedor'] ?></td>
+                                        <td><?= !empty($row['nome_fornecedor']) ? $row['nome_fornecedor'] : "Venda na loja" ?></td>
                                         <td><?= Formulario::getTipo($row['tipo_movimentacao']) ?></td>
                                         <td><?= Formulario::formatarDataBrasileira($row['data_pedido']) ?></td>
                                         <td><?= $row['data_chegada'] != '0000-00-00' ? Formulario::formatarDataBrasileira($row['data_chegada']) : 'Nenhuma data encontrada' ?></td>

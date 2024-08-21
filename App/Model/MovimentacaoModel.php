@@ -52,8 +52,9 @@ Class MovimentacaoModel extends ModelMain
             LEFT JOIN
                 movimentacao_item mi ON mi.id_movimentacoes = m.id
             LEFT JOIN
-                produto p ON p.id = mi.id_produtos");
-
+                produto p ON p.id = mi.id_produtos
+            ORDER BY m.id DESC");  // Ordenando por data_pedido em ordem decrescente
+        
         } else {
             $rsc = $this->db->dbSelect("SELECT DISTINCT
                 m.id AS id_movimentacao,
@@ -70,8 +71,10 @@ Class MovimentacaoModel extends ModelMain
             LEFT JOIN
                 produto p ON p.id = mi.id_produtos
             WHERE
-                m.statusRegistro = 1;");
+                m.statusRegistro = 1
+            ORDER BY m.id DESC;");  // Ordenando por data_pedido em ordem decrescente
         }
+        
 
         if ($this->db->dbNumeroLinhas($rsc) > 0) {
             return $this->db->dbBuscaArrayAll($rsc);
@@ -263,9 +266,6 @@ Class MovimentacaoModel extends ModelMain
                     ]
                 ]
             );
-
-            // var_dump($rsc);
-            // exit;
 
             // Array para armazenar os resultados
             $produtos = [];

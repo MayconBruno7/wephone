@@ -176,10 +176,6 @@ class Database
     {
         try {
 
-            // var_dump($table);
-            // var_dump($campos);
-            // exit;
-
             $save = $this->getCampos($campos);
             $fields = implode("` , `", array_keys($campos));
             $values = implode(" , ", array_keys($save['dados']));

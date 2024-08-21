@@ -19,6 +19,7 @@ Class MovimentacaoItemModel extends ModelMain
                     mi.id_produtos AS id_prod_mov_itens,
                     mi.quantidade AS mov_itens_quantidade,
                     mi.valor,
+                    mi.valor_venda,
                     p.*
                 FROM {$this->table} mi
                 INNER JOIN produto p ON p.id = mi.id_produtos

@@ -292,7 +292,6 @@ class Formulario
     {
         return '
      
-            <script type="text/javascript" src="' . baseUrl() . 'assets/DataTables/datatables.min.js"></script>         
             <style>
                 .dataTables_wrapper {
                     position: relative;

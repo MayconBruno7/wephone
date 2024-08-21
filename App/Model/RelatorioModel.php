@@ -21,6 +21,7 @@ Class RelatorioModel extends ModelMain
                 p.descricao,
                 mi.quantidade,
                 mi.valor,
+                mi.valor_venda,
                 m.tipo,
                 SUM(mi.quantidade) OVER() AS quantidadeDia
             FROM movimentacao m
@@ -56,7 +57,8 @@ Class RelatorioModel extends ModelMain
                 m.data_pedido, 
                 p.descricao, 
                 mi.quantidade, 
-                mi.valor, 
+                mi.valor,
+                mi.valor_venda, 
                 m.tipo,
                 SUM(mi.quantidade) OVER() AS quantidadeSemana
             FROM movimentacao m
@@ -87,7 +89,8 @@ Class RelatorioModel extends ModelMain
                 m.data_pedido, 
                 p.descricao, 
                 mi.quantidade, 
-                mi.valor, 
+                mi.valor,
+                mi.valor_venda, 
                 m.tipo,
                 SUM(mi.quantidade) OVER() AS quantidadeMes
             FROM movimentacao m
@@ -116,7 +119,8 @@ Class RelatorioModel extends ModelMain
                 m.data_pedido, 
                 p.descricao, 
                 mi.quantidade, 
-                mi.valor, 
+                mi.valor,
+                mi.valor_venda, 
                 m.tipo,
                 SUM(mi.quantidade) OVER() AS quantidadeAno
             FROM movimentacao m
@@ -147,7 +151,8 @@ Class RelatorioModel extends ModelMain
             m.tipo,
             mi.quantidade,
             mi.valor
- 
+
+mi.valor_venda, 
         FROM 
             fornecedor f
         JOIN 
@@ -170,7 +175,8 @@ Class RelatorioModel extends ModelMain
 
     public function RelatorioSemanaItemFornecedor($dataInicio, $dataFinal, $id_fornecedor)
     {
-        $rsc = $this->db->dbSelect("SELECT mi.id_movimentacoes, m.data_pedido, p.descricao, mi.quantidade, mi.valor, m.tipo
+        $rsc = $this->db->dbSelect("SELECT mi.id_movimentacoes, m.data_pedido, p.descricao, mi.quantidade, mi.valor,
+        mi.valor_venda, m.tipo
             FROM movimentacao m
             INNER JOIN movimentacao_item mi ON m.id = mi.id_movimentacoes
             INNER JOIN produto p ON mi.id_produtos = p.id
@@ -189,7 +195,8 @@ Class RelatorioModel extends ModelMain
 
     public function RelatorioMesItemFornecedor($dataInicio, $id_fornecedor)
     {
-        $rsc = $this->db->dbSelect("SELECT mi.id_movimentacoes, m.data_pedido, p.descricao, mi.quantidade, mi.valor, m.tipo
+        $rsc = $this->db->dbSelect("SELECT mi.id_movimentacoes, m.data_pedido, p.descricao, mi.quantidade, mi.valor,
+        mi.valor_venda, m.tipo
             FROM movimentacao m
             INNER JOIN movimentacao_item mi ON m.id = mi.id_movimentacoes
             INNER JOIN produto p ON mi.id_produtos = p.id
@@ -208,7 +215,8 @@ Class RelatorioModel extends ModelMain
 
     public function RelatorioAnoItemFornecedor($ano, $id_fornecedor)
     {
-        $rsc = $this->db->dbSelect("SELECT mi.id_movimentacoes, m.data_pedido, p.descricao, mi.quantidade, mi.valor, m.tipo
+        $rsc = $this->db->dbSelect("SELECT mi.id_movimentacoes, m.data_pedido, p.descricao, mi.quantidade, mi.valor,
+        mi.valor_venda, m.tipo
             FROM movimentacao m
             INNER JOIN movimentacao_item mi ON m.id = mi.id_movimentacoes
             INNER JOIN produto p ON mi.id_produtos = p.id

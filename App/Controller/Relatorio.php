@@ -104,6 +104,7 @@ class Relatorio extends ControllerMain
             $labels[] = Formulario::formatarDataBrasileira($dado['data_pedido']);
             $descricoes[] = $dado['descricao'];
             $valores[] = number_format($dado['valor'], 2, ",", ".");
+            $valores_venda[] = number_format($dado['valor_venda'], 2, ",", ".");
             $id_movimentacao[] = isset($dado['id_movimentacoes']) ? $dado['id_movimentacoes'] : $dado['id'];
             
             if ($dado['tipo'] == 1) { // Entrada
@@ -119,6 +120,7 @@ class Relatorio extends ControllerMain
             'labels' => $labels,
             'descricoes' => $descricoes,
             'valores' => $valores,
+            'valores_venda' => $valores_venda,
             'entradas' => $entradas,
             'saidas' => $saidas,
             'id_movimentacao' => $id_movimentacao

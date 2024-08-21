@@ -117,6 +117,15 @@
 
         <?php if ( $this->getAcao() == 'insert') : ?>
         <div class="row justify-content-center">
+            <div class="col-3 mt-3">
+                <label for="tipo" class="form-label">Tipo de Movimentação</label>
+                <select name="tipo" id="tipo" class="form-control" required <?=  $this->getAcao() != 'insert' &&  $this->getAcao() != 'update' ? 'disabled' : ''?>>
+                    <option value="">...</option>
+                    <option value="1" <?= isset($dadosMovimentacao['tipo_movimentacao']) && $dadosMovimentacao['tipo_movimentacao'] == 1 ? 'selected' : '' ?>>Entrada</option>
+                    <option value="2" <?= isset($dadosMovimentacao['tipo_movimentacao']) && $dadosMovimentacao['tipo_movimentacao'] == 2 ? 'selected' : '' ?>>Saída</option>
+                </select>
+            </div>
+
             <div class="col-6 mt-3">
                 <label for="fornecedor_id" class="form-label">Fornecedor</label>
                 <select name="fornecedor_id" id="fornecedor_id" class="form-control" required <?=  $this->getAcao() != 'insert' &&  $this->getAcao() != 'update' ? 'disabled' : ''?>>
@@ -126,15 +135,6 @@
                             <?= $fornecedor['nome'] ?>
                         </option>
                     <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div class="col-3 mt-3">
-                <label for="tipo" class="form-label">Tipo de Movimentação</label>
-                <select name="tipo" id="tipo" class="form-control" required <?=  $this->getAcao() != 'insert' &&  $this->getAcao() != 'update' ? 'disabled' : ''?>>
-                    <option value="">...</option>
-                    <option value="1" <?= isset($dadosMovimentacao['tipo_movimentacao']) && $dadosMovimentacao['tipo_movimentacao'] == 1 ? 'selected' : '' ?>>Entrada</option>
-                    <option value="2" <?= isset($dadosMovimentacao['tipo_movimentacao']) && $dadosMovimentacao['tipo_movimentacao'] == 2 ? 'selected' : '' ?>>Saída</option>
                 </select>
             </div>
 
@@ -250,9 +250,14 @@
                         <tr>
                             <td><?= $produto['id_produto'] ?></td>
                             <td><?= $produto['nome_produto'] ?></td>
-                            <td><?= number_format($produto['valor'], 2, ",", ".") ?></td>
+                            <td><?= !empty($produto['valor']) ? number_format($produto['valor'], 2, ",", ".") : number_format($produto['valor_venda'], 2, ",", ".") ?></td>
                             <td><?= $produto['quantidade'] ?></td>
-                            <td><?= number_format(($produto['quantidade'] * $produto['valor']), 2, ",", ".") ?></td>
+                            <td>
+                                <?= 
+                                    $valor = !empty($produto['valor']) ? $produto['valor'] : $produto['valor_venda'];
+                                    number_format(($produto['quantidade'] * $valor), 2, ",", ".") 
+                                ?>
+                            </td>
                             <td>
                                 <?php if($this->getAcao() != 'delete' && $this->getAcao() != 'view') : ?>
                                     <a href="<?= baseUrl() ?>Produto/index/delete/<?= $this->getId() ?>/<?= $produto['id_produto'] ?>/<?= $produto['quantidade'] ?>/<?= setValor('tipo') ?>" class="btn btn-outline-danger btn-sm" title="Exclusão">Excluir</a>&nbsp;
@@ -265,11 +270,14 @@
                         <input type="hidden" name="quantidade" id="quantidade" value="<?= $produto['quantidade'] ?>">
                         <input type="hidden" name="id_produto" id="id_produto" value="<?= $produto['id_produto'] ?>">
                         <input type="hidden" name="valor" id="valor" value="<?= $produto['valor'] ?>">
+                        <input type="hidden" name="valor_venda" id="valor_venda" value="<?= $produto['valor_venda'] ?>">
                         <!-- <input type="hidden" name="tipo_movimentacoes" id="tipo_movimentacoes" value="<?= isset($dadosMovimentacao['tipo_movimentacao']) ? $dadosMovimentacao['tipo_movimentacao'] : '' ?>"> -->
 
                         <?php
-                            $total += $produto['quantidade'] * $produto['valor'];
+                            $valor = !empty($produto['valor']) ? $produto['valor'] : $produto['valor_venda'];
+                            $total += $produto['quantidade'] * $valor;
                         ?>
+                        
                     <?php endforeach; ?>
                 <?php endif; ?>
             
@@ -277,13 +285,19 @@
                     <?php
 
                             foreach ($dados['aItemMovimentacao'] as $row) {
+
                         ?>
                         <tr>
                             <td><?= $row['id_prod_mov_itens'] ?></td>
                             <td><?= $row['nome'] ?></td>
-                            <td><?= number_format($row['valor'], 2, ",", ".")  ?> </td>
+                            <td><?= !empty($row['valor']) ? number_format($row['valor'], 2, ",", ".") : number_format($row['valor_venda'], 2, ",", ".") ?></td>
                             <td><?= $row['mov_itens_quantidade'] ?></td>
-                            <td><?= number_format(($row["mov_itens_quantidade"] * $row["valor"]), 2, ",", ".") ?></td>
+                            <td>
+                                <?= 
+                                    $valor = !empty($row['valor']) ? $row['valor'] : $row['valor_venda'];
+                                    number_format(($row['mov_itens_quantidade'] * $valor), 2, ",", ".") 
+                                ?>
+                            </td>
                             <td>
                             <?php if($this->getAcao() != 'delete' && $this->getAcao() != 'view') : ?>
                                 <a href="<?= baseUrl() ?>Produto/index/delete/<?= $this->getId() ?>/<?= $row['id_prod_mov_itens'] ?>/<?= $row['mov_itens_quantidade'] ?>/<?= setValor('tipo') ?>" class="btn btn-outline-danger btn-sm" title="Exclusão">Excluir</a>&nbsp;
@@ -301,7 +315,8 @@
 
                         <?php
 
-                            $total = $total + ($row["mov_itens_quantidade"] * $row["valor"]);
+                            $valor = !empty($row['valor']) ? $row['valor'] : $row['valor_venda'];
+                            $total += $row['mov_itens_quantidade'] * $valor;
 
                             }
                         ?>
@@ -331,12 +346,33 @@
         </div>
     </form>
 
-    <!-- <button onclick="capturarValores()">Salvar na Sessão</button> -->
 </main>
 
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let tipoMovimentacao = document.getElementById('tipo').value;
+        let fornecedorField = document.getElementById('fornecedor_id');
+        let valorCompraField = document.getElementById('valor');
+
+        // Desabilitar o campo se o valor inicial de tipoMovimentacao for 2
+        if (tipoMovimentacao == '2' || tipoMovimentacao === '') {
+            fornecedorField.disabled = true;
+            valorCompraField.disabled = true;
+        }
+
+        // Atualizar o estado do campo ao mudar o valor de tipoMovimentacao
+        document.getElementById('tipo').addEventListener('change', function(event) {
+            tipoMovimentacao = event.target.value;
+            fornecedorField.disabled = (tipoMovimentacao == '2');
+            valorCompraField.disabled = (tipoMovimentacao == '2');
+        });
+    });
+
+    // Chama o evento change quando a página carrega para garantir que o estado inicial está correto
+    document.getElementById('tipo').dispatchEvent(new Event('change'));
 
     $(function() {
         // Evento de change no select de tipo_produto
@@ -393,7 +429,6 @@
             var fornecedor_id = document.getElementById('fornecedor_id').value;
             var tipo_movimentacao = document.getElementById('tipo').value;
             var statusRegistro = document.getElementById('statusRegistro').value;
-            var setor_id = document.getElementById('setor_id').value;
             var data_pedido = document.getElementById('data_pedido').value;
             var data_chegada = document.getElementById('data_chegada').value;
             var motivo = document.getElementById('motivo').value;
@@ -424,7 +459,6 @@
                 'fornecedor_id': fornecedor_id,
                 'tipo_movimentacao': tipo_movimentacao,
                 'statusRegistro': statusRegistro,
-                'setor_id': setor_id,
                 'data_pedido': data_pedido,
                 'data_chegada': data_chegada,
                 'motivo': motivo,
@@ -433,8 +467,7 @@
 
             // Função para abrir o modal
             function abrirModal() {
-                var modal = new bootstrap.Modal(document.getElementById('modalAdicionarProduto'));
-                modal.show();
+                $('#modalAdicionarProduto').modal('show');
             }
 
             // Envia os dados para o PHP usando AJAX
