@@ -61,7 +61,7 @@
 
                         <div class="mb-3">
                             <label for="quantidade" class="form-label">Quantidade</label>
-                            <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+                            <input type="number" class="form-control" id="quantidade" name="quantidade" min="1" required>
                         </div>
 
                         <input type="hidden" class="form-control" id="valor" name="valor" required>
@@ -360,7 +360,7 @@
 
                 $.getJSON('/OrdemServico/getPecaComboBox/' + termo, 
                 function(data) {
-                    console.log(data);
+                    // console.log(data);
                     var options = '<option value="" selected disabled>Escolha o produto</option>';
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -441,7 +441,7 @@
             };
 
             
-            console.log(ordem_servico);
+            // console.log(ordem_servico);
 
             // Função para abrir o modal
             function abrirModal() {
@@ -457,7 +457,7 @@
                     
                     abrirModal();
                 } else {
-                    console.log('Erro ao salvar informações');
+                    // console.log('Erro ao salvar informações');
                 }
             };
             xhr.send(JSON.stringify(ordem_servico));

@@ -72,17 +72,17 @@
 
                         <div class="mb-3">
                             <label for="quantidade" class="form-label">Quantidade</label>
-                            <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+                            <input type="number" class="form-control" id="quantidade" name="quantidade" min="0" required>
                         </div>
                         
                         <div class="mb-3">
                             <label for="valor" class="form-label">Valor de compra</label>
-                            <input type="number" step="0.01" class="form-control" id="valor" name="valor" required>
+                            <input type="number" step="0.01" class="form-control" id="valor" name="valor" min="0" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="valor_venda" class="form-label">Valor de venda</label>
-                            <input type="number" step="0.01" class="form-control" id="valor_venda" name="valor_venda" required>
+                            <input type="number" step="0.01" class="form-control" id="valor_venda" name="valor_venda" min="0" required>
                         </div>
 
                         <input type="hidden" name="id_movimentacao" value="<?= $this->getId() ?>">
@@ -391,7 +391,7 @@
 
                     $.getJSON('/Movimentacao/getProdutoComboBox/' + termo + '/' + tipo_produto, 
                     function(data) {
-                        console.log(data);
+                        // console.log(data);
                         var options = '<option value="" selected disabled>Escolha o produto</option>';
                         if (data.length > 0) {
                             for (var i = 0; i < data.length; i++) {
@@ -480,7 +480,7 @@
                     var tipo = tipo_movimentacao;
                     abrirModal();
                 } else {
-                    console.log('Erro ao salvar informações');
+                    // console.log('Erro ao salvar informações');
                 }
             };
             xhr.send(JSON.stringify(movimentacao));

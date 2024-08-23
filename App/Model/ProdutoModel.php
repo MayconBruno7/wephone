@@ -42,20 +42,20 @@ Class ProdutoModel extends ModelMain
             $rsc = $this->db->dbSelect(
                 "SELECT 
                     produto.*, 
-                    (SELECT valor FROM movimentacao_item WHERE id_produtos = produto.id LIMIT 1) AS valor
+                    (SELECT valor FROM movimentacao_item WHERE id_produtos = produto.id LIMIT 1) AS valor,
+                    (SELECT valor_venda FROM movimentacao_item WHERE id_produtos = produto.id LIMIT 1) AS valor_venda
                 FROM 
-                    {$this->table}
+                    {$this->table} AS produto
                 ORDER BY produto.id DESC"  // Adicionei ORDER BY produto.id para usar DESC
             );
         } else {
             $rsc = $this->db->dbSelect(
                 "SELECT 
                     produto.*, 
-                    (SELECT valor FROM movimentacao_item WHERE id_produtos = produto.id LIMIT 1) AS valor
+                    (SELECT valor FROM movimentacao_item WHERE id_produtos = produto.id LIMIT 1) AS valor,
+                    (SELECT valor_venda FROM movimentacao_item WHERE id_produtos = produto.id LIMIT 1) AS valor_venda
                 FROM 
-                    {$this->table}
-                WHERE 
-                    statusRegistro = 1 AND quantidade > 0
+                    {$this->table} AS produto
                 ORDER BY produto.id DESC"  // Adicionei ORDER BY produto.id para usar DESC
             );
         }

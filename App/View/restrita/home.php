@@ -6,6 +6,14 @@ use App\Library\Session;
 ?>
 
 <div class="container" style="margin-top: 80px;">
+    <div class="row mb-2">
+          <div class="col-12">
+              <?= Formulario::exibeMsgError() ?>
+          </div>
+          <div class="col-12">
+              <?= Formulario::exibeMsgSucesso() ?>
+          </div>
+      </div>
     <main>
         <div class="jumbotron text-center my-5">
             <h1 class="display-4">Bem-vindo ao Sistema de Controle de Estoque</h1>

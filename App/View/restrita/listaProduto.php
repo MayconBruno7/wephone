@@ -31,9 +31,11 @@
                                     <th class="sorting_asc" tabindex="0" aria-controls="tbListaProduto" rowspan="1" colspan="1" style="width: 113.297px;" aria-sort="ascending" aria-label="ID: activate to sort column descending">ID</th>
                                     <th class="sorting" tabindex="0" aria-controls="tbListaProduto" rowspan="1" colspan="1" style="width: 175.656px;" aria-label="Usuario: activate to sort column ascending">Nome Produto</th>
                                     <th class="sorting" tabindex="0" aria-controls="tbListaProduto" rowspan="1" colspan="1" style="width: 175.656px;" aria-label="Usuario: activate to sort column ascending">Quantidade</th>
-                                    <?php if (!$this->getAcao()) : ?>
+                                    <?php if ($this->getAdministrador()) : ?>
                                         <th class="sorting" tabindex="0" aria-controls="tbListaProduto" rowspan="1" colspan="1" style="width: 79.5938px;" aria-label="Status do Usuario: activate to sort column ascending">Valor</th>
-
+                                    <?php endif; ?>
+                                    <?php if (!$this->getAcao() && $this->getUsuario()) : ?>
+                                        <th class="sorting" tabindex="0" aria-controls="tbListaProduto" rowspan="1" colspan="1" style="width: 79.5938px;" aria-label="Status do Usuario: activate to sort column ascending">Valor de venda</th>
                                     <?php endif; ?>
                                     <th class="sorting" tabindex="0" aria-controls="tbListaProduto" rowspan="1" colspan="1" style="width: 79.5938px;" aria-label="Status do Usuario: activate to sort column ascending">Estado do produto</th>
                                     <th class="sorting" tabindex="0" aria-controls="tbListaProduto" rowspan="1" colspan="1" style="width: 79.5938px;" aria-label="Status do Usuario: activate to sort column ascending">Status do produto</th>
@@ -46,11 +48,19 @@
                                         <td class="sorting_1"><?= $value['id'] ?></td>
                                         <td><?= $value['nome'] ?></td>
                                         <td><?= !empty($value['quantidade']) ? $value['quantidade'] : 'Não encontrado' ?></td>
-                                        <?php if (!$this->getAcao()) : ?>
+
+                                        <?php if ($this->getAdministrador()) : ?>
                                             <td>
                                                 <?= !empty($value['valor']) ? number_format($value['valor'], 2, ",", ".") : "Não encontrado" ?>
                                             </td>
                                         <?php endif; ?>
+
+                                        <?php if (!$this->getAcao() && $this->getUsuario()) : ?>
+                                            <td>
+                                                <?= !empty($value['valor_venda']) ? number_format($value['valor_venda'], 2, ",", ".") : "Não encontrado" ?>
+                                            </td>
+                                        <?php endif; ?>
+
                                         <td><?= Formulario::getCondicao($value['condicao']) ?></td>
                                         <td><?= Formulario::getStatusDescricao($value['statusRegistro']) ?></td>
                                         <td>
