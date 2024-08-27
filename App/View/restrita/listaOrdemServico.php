@@ -49,23 +49,12 @@
                                         <td><?= $value['tipo_servico'] ?></td>
                                         <td><?= $value['descricao_servico'] ?></td>
                                         <td>
-                                        <!-- <?php if ($this->getAcao() == 'delete') : ?>
-                                            <form class="g-3" action="<?= baseUrl() ?>Movimentacao/deleteProdutoMovimentacao/<?= $this->getAcao() ?>" method="post">
-                                                <p>Quantidade atual: <?= $this->getOutrosParametros(5) ?></p>
-                                                <label for="quantidadeRemover" class="form-label">Quantidade</label>
-                                                <input type="number" name="quantidadeRemover" id="quantidadeRemover" class="form-control" required></input>
-                                                <input type="hidden" name="id_produto" value="<?= $this->getOutrosParametros(4) ?>">
-                                                <input type="hidden" name="id_movimentacao" value="<?= $this->getId() ?>">
-                                                <input type="hidden" name="tipo" value="<?= $this->getOutrosParametros(6) ?>">
-                                                <button type="submit" class="btn btn-primary btn-sm mt-2">Remover</button>
-                                            </form>
-                                        <?php endif; ?>
 
-                                        <?php if (!$this->getAcao()) : ?> -->
+                                        <?php if (!$this->getAcao()) : ?> 
                                             <?= Formulario::botao("view", $value['ordem_id']) ?>
                                             <?= Formulario::botao("update", $value['ordem_id']) ?>
                                             <?= Formulario::botao("delete", $value['ordem_id']) ?>
-                                        <!-- <?php endif; ?> -->
+                                       <?php endif; ?> 
                                     </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -80,76 +69,4 @@
     </div>
 </div>
 
-
-
-
-
-<!-- 
-
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ordem_servico";
-
-// Criar conexão
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar conexão
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT * FROM ordens_servico";
-$result = $conn->query($sql);
-
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Ordens de Serviço</title>
-</head>
-<body>
-    <h1>Ordens de Serviço</h1>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Nome do Cliente</th>
-            <th>Telefone</th>
-            <th>Modelo do Dispositivo</th>
-            <th>IMEI</th>
-            <th>Descrição do Serviço</th>
-            <th>Tipo de Serviço</th>
-            <th>Problema Reportado</th>
-            <th>Data de Abertura</th>
-            <th>Status</th>
-            <th>Observações</th>
-            <th>Peças e valores</th>
-            <th>Ações</th>
-        </tr>
-        <?php while ($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?= $row['id'] ?></td>
-            <td><?= $row['cliente_nome'] ?></td>
-            <td><?= $row['telefone_cliente'] ?></td>
-            <td><?= $row['modelo_dispositivo'] ?></td>
-            <td><?= $row['imei_dispositivo'] ?></td>
-            <td><?= $row['descricao_servico'] ?></td>
-            <td><?= $row['tipo_servico'] ?></td>
-            <td><?= $row['problema_reportado'] ?></td>
-            <td><?= $row['data_abertura'] ?></td>
-            <td><?= $row['status'] ?></td>
-            <td><?= $row['observacoes'] ?></td>
-            <td><?= $row['id_peca'] ?></td>
-            <td><a href="imprimir_os.php?id=<?= $row['id'] ?>">Imprimir</a></td>
-        </tr>
-        <?php endwhile; ?>
-    </table>
-</body>
-</html>
-<?php
-$conn->close();
-?>
-
- -->
 
