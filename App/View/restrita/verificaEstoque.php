@@ -1,7 +1,7 @@
 <?php
 
     // Sanitiza e obtém os dados do formulário
-    $emailRemetente = 'mayconbruno118@gmail.com';
+    $emailRemetente = 'teste@gmail.com';
     $nomeRemetente = 'Sistema de controle de estoque';
     $assunto = 'Alerta de estoque';
     $mensagem = 'mensagem';
