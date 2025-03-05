@@ -13,7 +13,7 @@ use App\Library\Formulario;
     <title>We Phone - Controle estoque</title>
 
     <link rel="stylesheet" href="<?= baseUrl() ?>assets/bootstrap/css/bootstrap.min.css">
-    <link rel="icon" href="<?= baseUrl() ?>assets/img/brasao-pmrl-icon.jpeg" type="image/jpeg">
+    <link rel="icon" href="<?= baseUrl() ?>assets/img/wephonelogo.jpg" type="image/jpeg">
 
     <!-- Datatables -->
     <link rel="stylesheet" href="<?= baseUrl() ?>assets/css/app.min.css">

@@ -23,7 +23,7 @@ class FaleConosco extends ControllerMain
         $ProdutoModel = $this->loadModel("Produto");
         $dados['aProduto'] = $ProdutoModel->lista('id');
 
-        $emailRemetente = 'mayconbruno118@gmail.com';
+        $emailRemetente = 'teste@gmail.com';
         $nomeRemetente = 'Sistema de controle de estoque';
         $assunto = 'Alerta de estoque';
 
