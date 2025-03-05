@@ -107,7 +107,7 @@ class FaleConosco extends ControllerMain
                 $nomeRemetente,         /* Nome do Remetente */
                 $assunto,               /* Assunto do e-mail */
                 $corpoEmail,            /* Corpo do E-mail */
-                'maycon7ads@gmail.com'  /* Destinatário do E-mail */
+                'teste@gmail.com'  /* Destinatário do E-mail */
             );
 
             // Verifica se o e-mail foi enviado com sucesso
